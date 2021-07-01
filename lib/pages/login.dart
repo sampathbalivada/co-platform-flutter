@@ -11,6 +11,33 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  showAlertDialog(BuildContext context, String title, String content) {
+    // Create button
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    // Create AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(title),
+      content: Text(content),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   TextEditingController signInEmailId = TextEditingController();
   TextEditingController signInPassword = TextEditingController();
 
@@ -56,7 +83,11 @@ class _LoginPageState extends State<LoginPage> {
                         if (r) {
                           Navigator.pushReplacementNamed(context, '/home');
                         } else {
-                          // show Dialog box with reason for error
+                          showAlertDialog(
+                            context,
+                            'Login Error',
+                            'Invalid email ID or password. If you just registered, make sure to verify your email.',
+                          );
                         }
                       },
                     ),
@@ -91,9 +122,19 @@ class _LoginPageState extends State<LoginPage> {
                         );
 
                         if (r) {
-                          // show Dialog Box to verify email
+                          showAlertDialog(
+                            context,
+                            'Registered Successfully',
+                            'Check your inbox at ' +
+                                signUpEmailId.text +
+                                ' and verify your email using the link provided.',
+                          );
                         } else {
-                          // show Dialog Box to contact admin at college
+                          showAlertDialog(
+                            context,
+                            'Registration Error',
+                            'Check your email and password. If problem persists, contact admin at college',
+                          );
                         }
                       },
                     ),
