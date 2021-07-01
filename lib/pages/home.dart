@@ -10,7 +10,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String show = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(

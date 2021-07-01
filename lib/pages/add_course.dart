@@ -1,17 +1,51 @@
 import 'package:flutter/material.dart';
 
-class AddCoursePage extends StatelessWidget {
+class AddCoursePage extends StatefulWidget {
   final model;
 
   AddCoursePage({@required this.model});
 
   @override
+  _AddCoursePageState createState() => _AddCoursePageState();
+}
+
+class _AddCoursePageState extends State<AddCoursePage> {
+  bool _isloading = false;
+  TextEditingController courseCode = TextEditingController();
+  TextEditingController courseName = TextEditingController();
+
+  TextEditingController coordinatorEmail = TextEditingController();
+  String yearSelected = "None";
+  DateTime selectedYear = DateTime(2021);
+  showAlertDialog(BuildContext context, String title, String content) {
+    // Create button
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    // Create AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(title),
+      content: Text(content),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    TextEditingController courseCode = TextEditingController();
-    TextEditingController courseName = TextEditingController();
-    TextEditingController batch = TextEditingController();
-    TextEditingController coordinatorEmail = TextEditingController();
-    var selectedYear = DateTime(2021);
     return Scaffold(
       appBar: AppBar(
         title: Text('Home > HOD > Add Course'),
@@ -23,10 +57,14 @@ class AddCoursePage extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               buildCustomTextField(
-                  courseCode, TextInputType.number, "Course Code"),
+                  courseCode, TextInputType.text, "Course Code"),
               buildCustomTextField(
                   courseName, TextInputType.text, "Course Name"),
-              ElevatedButton(
+              Container(
+                height: 60,
+                padding: EdgeInsets.all(10),
+                width: MediaQuery.of(context).size.width,
+                child: OutlinedButton(
                   onPressed: () {
                     showDialog(
                         context: context,
@@ -43,16 +81,63 @@ class AddCoursePage extends StatelessWidget {
                                   initialDate: DateTime.now(),
                                   selectedDate: selectedYear,
                                   onChanged: (val) {
-                                    selectedYear = val;
+                                    setState(() {
+                                      selectedYear = val;
+                                      yearSelected = val.year.toString();
+                                    });
                                     Navigator.pop(context);
                                   }),
                             ),
                           );
                         });
                   },
-                  child: Text("Select Batch")),
+                  child: Text(
+                    yearSelected == "None" ? "Select Batch" : yearSelected,
+                  ),
+                ),
+              ),
               buildCustomTextField(coordinatorEmail, TextInputType.emailAddress,
                   "Coordinator Email"),
+              Container(
+                height: 60,
+                padding: EdgeInsets.all(10),
+                width: MediaQuery.of(context).size.width,
+                child: ElevatedButton(
+                  child: _isloading
+                      ? Center(child: CircularProgressIndicator())
+                      : Text("Add Course"),
+                  onPressed: () async {
+                    setState(() {
+                      _isloading = true;
+                    });
+                    bool result = await widget.model.addCourse(courseCode.text,
+                        yearSelected, courseName.text, coordinatorEmail.text);
+                    if (result) {
+                      showAlertDialog(
+                        context,
+                        'Course Added',
+                        'The course ${courseName.text} with ${courseCode.text} for the batch $yearSelected is successfully added.',
+                      );
+                      setState(() {
+                        courseCode.text = "";
+                        courseName.text = "";
+                        coordinatorEmail.text = "";
+                        yearSelected = "None";
+                        _isloading = false;
+                      });
+                    } else {
+                      setState(() {
+                        courseCode.text = "";
+                        courseName.text = "";
+                        coordinatorEmail.text = "";
+                        yearSelected = "None";
+                        _isloading = false;
+                      });
+                      print("Error");
+                    }
+                  },
+                ),
+              ),
             ],
           ),
         ),
