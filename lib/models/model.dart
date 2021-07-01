@@ -61,4 +61,28 @@ class COPlatform extends Model {
       return true;
     }
   }
+
+  Future<bool> addCourse(
+    String courseCode,
+    String batch,
+    String courseName,
+    String coordinatorEmail,
+  ) async {
+    final result = await this._supabaseClient.from('courses').upsert(
+      {
+        'course_code': courseCode,
+        'batch': batch,
+        'name': courseName,
+        'coordinator_email': coordinatorEmail,
+      },
+    ).execute();
+
+    if (result.error != null) {
+      // Handle error
+      return false;
+    } else {
+      // return success
+      return true;
+    }
+  }
 }
