@@ -11,7 +11,6 @@ main(List<String> args) {
 }
 
 class MainApp extends StatelessWidget {
-
   final _model;
 
   MainApp(this._model);
@@ -19,7 +18,11 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: LoginPage(model: _model),
+      routes: {
+        "/login": (context) => LoginPage(model: _model),
+      },
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/login',
     );
   }
 }
