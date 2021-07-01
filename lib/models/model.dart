@@ -6,12 +6,16 @@ class COPlatform extends Model {
     'https://wbuhlcfdloobzennktsc.supabase.co',
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYyNTEzMzU5NSwiZXhwIjoxOTQwNzA5NTk1fQ.UAGKph4zLvAMnF1ehFGpaQFpHlhqT6Exu2x5T1Udfus',
   );
-  sb.User? _user;
-  sb.Session? _session;
+
+  List<dynamic> _roles = [];
 
   sb.SupabaseClient get supabaseClient => _supabaseClient;
-  sb.User? get user => _user;
-  sb.Session? get session => _session;
+
+  String? get emailId {
+    return _supabaseClient.auth.user()?.email;
+  }
+
+  // List<String> get roles => _roles;
 
   Future<bool> signIn(String emailId, String password) async {
     final response = await this
@@ -25,10 +29,13 @@ class COPlatform extends Model {
       // ERROR: Prompt the user to try again!
     } else {
       // SUCCESS: User and session available!
-      print(response.user);
-      this._user = response.user;
-      this._session = response.data;
+      final roles = await this
+          ._supabaseClient
+          .from('roles_assigned')
+          .select('role')
+          .match({'email': emailId}).execute();
 
+      this._roles = roles.data[0]['role'];
       return true;
     }
   }
@@ -38,14 +45,10 @@ class COPlatform extends Model {
 
     if (response.error != null) {
       print(response.error);
-      return false;
       // ERROR: Prompt the user to try again!
+      return false;
     } else {
       // SUCCESS: User and session available!
-      print(response.user);
-      this._user = response.user;
-      this._session = response.data;
-
       return true;
     }
   }

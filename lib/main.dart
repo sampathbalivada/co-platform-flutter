@@ -1,6 +1,7 @@
 import 'package:co_attainment_platform/models/model.dart';
 import 'package:flutter/material.dart';
 
+import 'pages/home.dart';
 import 'pages/login.dart';
 
 main(List<String> args) {
@@ -19,6 +20,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       routes: {
         "/login": (context) => LoginPage(model: _model),
+        "/home": (context) => HomePage(model: _model),
       },
       debugShowCheckedModeBanner: false,
       initialRoute: '/login',

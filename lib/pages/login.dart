@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                         );
 
                         if (r) {
-                          // goto HomePage
+                          Navigator.pushReplacementNamed(context, '/home');
                         } else {
                           // show Dialog box with reason for error
                         }
