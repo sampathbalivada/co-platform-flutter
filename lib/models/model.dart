@@ -7,6 +7,14 @@ class COPlatform extends Model {
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYyNTEzMzU5NSwiZXhwIjoxOTQwNzA5NTk1fQ.UAGKph4zLvAMnF1ehFGpaQFpHlhqT6Exu2x5T1Udfus',
   );
 
+  Map<String, List> _tasks = {
+    "Faculty": ["Upload Marks"],
+    "HOD": ["Calculate Statistics", "Add Course"],
+    "Course Coordinator": ["Assign CO threshhold"],
+    "Common": ["Check Statistics"]
+  };
+
+  Map<String, List> get tasks => _tasks;
   List<dynamic> _roles = [];
 
   sb.SupabaseClient get supabaseClient => _supabaseClient;
@@ -15,7 +23,7 @@ class COPlatform extends Model {
     return _supabaseClient.auth.user()?.email;
   }
 
-  // List<String> get roles => _roles;
+  List<dynamic> get roles => _roles;
 
   Future<bool> signIn(String emailId, String password) async {
     final response = await this
@@ -36,6 +44,7 @@ class COPlatform extends Model {
           .match({'email': emailId}).execute();
 
       this._roles = roles.data[0]['role'];
+      this._roles.add("Common");
       return true;
     }
   }
