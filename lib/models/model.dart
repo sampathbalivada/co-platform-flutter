@@ -10,7 +10,7 @@ class COPlatform extends Model {
   Map<String, List> _tasks = {
     "Faculty": ["Upload Marks"],
     "HOD": ["Calculate Statistics", "Add Course"],
-    "Course Coordinator": ["Assign CO threshhold"],
+    "Course Coordinator": ["Assign CO Threshold"],
     "Common": ["Check Statistics"]
   };
 

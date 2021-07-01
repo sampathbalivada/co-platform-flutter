@@ -55,8 +55,8 @@ class _LoginPageState extends State<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 60, right: 30),
+              child: Container(
+                padding: const EdgeInsets.only(left: 240, right: 120),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -75,9 +75,14 @@ class _LoginPageState extends State<LoginPage> {
                     ElevatedButton(
                       child: Text('Login'),
                       onPressed: () async {
+                        // bool r = await widget.model.signIn(
+                        //   signInEmailId.text,
+                        //   signInPassword.text,
+                        // );
+
                         bool r = await widget.model.signIn(
-                          signInEmailId.text,
-                          signInPassword.text,
+                          'sri@sampath.dev',
+                          'google',
                         );
 
                         if (r) {
@@ -96,8 +101,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 30, right: 60),
+              child: Container(
+                padding: const EdgeInsets.only(left: 120, right: 240),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
