@@ -1,4 +1,5 @@
 import 'package:co_attainment_platform/models/model.dart';
+import 'package:co_attainment_platform/pages/add_course.dart';
 import 'package:co_attainment_platform/pages/upload_marks.dart';
 import 'package:flutter/material.dart';
 
@@ -20,16 +21,16 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        "/login": (context) => LoginPage(model: _model),
+        "/": (context) => LoginPage(model: _model),
         "/home": (context) => HomePage(model: _model),
         "/upload_marks": (context) => UploadMarks(model: _model),
         "/calculate_statistics": (context) => UploadMarks(model: _model),
-        "/add_course": (context) => UploadMarks(model: _model),
+        "/add_course": (context) => AddCoursePage(model: _model),
         "/assign_co_threshold": (context) => UploadMarks(model: _model),
         "/check_statistics": (context) => UploadMarks(model: _model),
       },
       debugShowCheckedModeBanner: false,
-      initialRoute: '/login',
+      initialRoute: '/',
     );
   }
 }
