@@ -60,7 +60,13 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('Sign In'),
+                    Text(
+                      'Sign In',
+                      style: TextStyle(
+                        fontSize: 24,
+                      ),
+                    ),
+                    SizedBox(height: 12),
                     buildCustomTextField(
                       signInEmailId,
                       TextInputType.emailAddress,
@@ -72,29 +78,45 @@ class _LoginPageState extends State<LoginPage> {
                       'Password',
                       obscureText: true,
                     ),
-                    ElevatedButton(
-                      child: Text('Login'),
-                      onPressed: () async {
-                        // bool r = await widget.model.signIn(
-                        //   signInEmailId.text,
-                        //   signInPassword.text,
-                        // );
+                    Container(
+                      padding: const EdgeInsets.only(
+                        left: 75,
+                        right: 75,
+                        top: 8,
+                        bottom: 8,
+                      ),
+                      width: MediaQuery.of(context).size.width,
+                      // height: 50,
+                      child: ElevatedButton(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Login',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                        onPressed: () async {
+                          // bool r = await widget.model.signIn(
+                          //   signInEmailId.text,
+                          //   signInPassword.text,
+                          // );
 
-                        bool r = await widget.model.signIn(
-                          'sri@sampath.dev',
-                          'google',
-                        );
-
-                        if (r) {
-                          Navigator.pushReplacementNamed(context, '/home');
-                        } else {
-                          showAlertDialog(
-                            context,
-                            'Login Error',
-                            'Invalid email ID or password. If you just registered, make sure to verify your email.',
+                          bool r = await widget.model.signIn(
+                            'sri@sampath.dev',
+                            'google',
                           );
-                        }
-                      },
+
+                          if (r) {
+                            Navigator.pushReplacementNamed(context, '/home');
+                          } else {
+                            showAlertDialog(
+                              context,
+                              'Login Error',
+                              'Invalid email ID or password. If you just registered, make sure to verify your email.',
+                            );
+                          }
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -106,7 +128,13 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('Register'),
+                    Text(
+                      'Register',
+                      style: TextStyle(
+                        fontSize: 24,
+                      ),
+                    ),
+                    SizedBox(height: 12),
                     buildCustomTextField(
                       signUpEmailId,
                       TextInputType.emailAddress,
@@ -118,30 +146,46 @@ class _LoginPageState extends State<LoginPage> {
                       'Password',
                       obscureText: true,
                     ),
-                    ElevatedButton(
-                      child: Text('Register'),
-                      onPressed: () async {
-                        bool r = await widget.model.signUp(
-                          signUpEmailId.text,
-                          signUpPassword.text,
-                        );
+                    Container(
+                      padding: const EdgeInsets.only(
+                        left: 75,
+                        right: 75,
+                        top: 8,
+                        bottom: 8,
+                      ),
+                      width: MediaQuery.of(context).size.width,
+                      // height: 50,
+                      child: ElevatedButton(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Register',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                        onPressed: () async {
+                          bool r = await widget.model.signUp(
+                            signUpEmailId.text,
+                            signUpPassword.text,
+                          );
 
-                        if (r) {
-                          showAlertDialog(
-                            context,
-                            'Registered Successfully',
-                            'Check your inbox at ' +
-                                signUpEmailId.text +
-                                ' and verify your email using the link provided.',
-                          );
-                        } else {
-                          showAlertDialog(
-                            context,
-                            'Registration Error',
-                            'Check your email and password. If problem persists, contact admin at college',
-                          );
-                        }
-                      },
+                          if (r) {
+                            showAlertDialog(
+                              context,
+                              'Registered Successfully',
+                              'Check your inbox at ' +
+                                  signUpEmailId.text +
+                                  ' and verify your email using the link provided.',
+                            );
+                          } else {
+                            showAlertDialog(
+                              context,
+                              'Registration Error',
+                              'Check your email and password. If problem persists, contact admin at college',
+                            );
+                          }
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -153,17 +197,21 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  TextField buildCustomTextField(TextEditingController controller,
+  Widget buildCustomTextField(TextEditingController controller,
       TextInputType inputType, String hintText,
       {bool obscureText = false}) {
-    return TextField(
-      controller: controller,
-      keyboardType: inputType,
-      obscureText: obscureText,
-      decoration: InputDecoration(
-        hintText: hintText,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+    return Padding(
+      padding: const EdgeInsets.only(left: 75, right: 75, top: 8, bottom: 8),
+      child: TextField(
+        controller: controller,
+        keyboardType: inputType,
+        obscureText: obscureText,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.only(left: 8, right: 8),
+          hintText: hintText,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
       ),
     );

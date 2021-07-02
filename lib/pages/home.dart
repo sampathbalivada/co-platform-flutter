@@ -71,9 +71,17 @@ class _HomePageState extends State<HomePage> {
                                                   .replaceAll(' ', '_')
                                                   .toLowerCase(),
                                         );
+                                      } else {
+                                        print("error");
                                       }
                                     } else {
-                                      print("error");
+                                      Navigator.pushNamed(
+                                        context,
+                                        "/" +
+                                            taskName
+                                                .replaceAll(' ', '_')
+                                                .toLowerCase(),
+                                      );
                                     }
                                   },
                                   child: Padding(
