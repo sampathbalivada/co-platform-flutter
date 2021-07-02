@@ -1,6 +1,22 @@
 import 'package:scoped_model/scoped_model.dart';
 import 'package:supabase/supabase.dart' as sb;
 
+class Course {
+  final courseCode;
+  final courseName;
+  final batch;
+  final year;
+  final semester;
+
+  Course(
+    this.courseCode,
+    this.courseName,
+    this.batch,
+    this.year,
+    this.semester,
+  );
+}
+
 class COPlatform extends Model {
   final _supabaseClient = sb.SupabaseClient(
     'https://wbuhlcfdloobzennktsc.supabase.co',
@@ -13,6 +29,8 @@ class COPlatform extends Model {
     "Course Coordinator": ["Assign CO Threshold"],
     "Common": ["Check Statistics"]
   };
+
+  List<Course> _courseCoordinatorAssignedCourses = [];
 
   Map<String, List> get tasks => _tasks;
   List<dynamic> _roles = ["Common"];
@@ -83,6 +101,27 @@ class COPlatform extends Model {
       return false;
     } else {
       // return success
+      return true;
+    }
+  }
+
+  Future<bool> getAssignedCoursesForCoordinator() async {
+    final result = await this
+        ._supabaseClient
+        .from('courses')
+        .select('course_code, course_name, batch')
+        .match(
+      {
+        'coordinator_email': _supabaseClient.auth.user()?.email,
+      },
+    ).execute();
+
+    if (result.error != null) {
+      print(result.error?.message);
+      return false;
+    } else {
+      // return success
+      print(result.data);
       return true;
     }
   }
