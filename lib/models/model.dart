@@ -30,18 +30,16 @@ class COPlatform extends Model {
     "Common": ["Check Statistics"]
   };
 
-  List<Course> _courseCoordinatorAssignedCourses = [];
+  Map<String, List<Course>> _coursesAssigned = {};
 
-  Map<String, List> get tasks => _tasks;
   List<dynamic> _roles = ["Common"];
 
+  // Getters
+  Map<String, List> get tasks => _tasks;
   sb.SupabaseClient get supabaseClient => _supabaseClient;
-
-  String? get emailId {
-    return _supabaseClient.auth.user()?.email;
-  }
-
+  String? get emailId => _supabaseClient.auth.user()?.email;
   List<dynamic> get roles => _roles;
+  Map<String, List<Course>> get coursesAssigned => _coursesAssigned;
 
   Future<bool> signIn(String emailId, String password) async {
     final response = await this
@@ -117,12 +115,39 @@ class COPlatform extends Model {
     ).execute();
 
     if (result.error != null) {
-      print("hii");
       print(result.error?.message);
       return false;
     } else {
       // return success
-      print(result.data);
+
+      var data = result.data;
+
+      _coursesAssigned = {};
+
+      for (var i = 0; i < data.length; i++) {
+        if (_coursesAssigned.containsKey(data[i]['batch'])) {
+          _coursesAssigned[data[i]['batch']]?.add(
+            Course(
+              data[i]['course_code'],
+              data[i]['name'],
+              data[i]['batch'],
+              int.parse(data[i]['course_code'][6]),
+              int.parse(data[i]['course_code'][7]),
+            ),
+          );
+        } else {
+          _coursesAssigned[data[i]['batch']] = [
+            Course(
+              data[i]['course_code'],
+              data[i]['name'],
+              data[i]['batch'],
+              int.parse(data[i]['course_code'][6]),
+              int.parse(data[i]['course_code'][7]),
+            ),
+          ];
+        }
+      }
+
       return true;
     }
   }
