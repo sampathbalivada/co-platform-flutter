@@ -15,7 +15,7 @@ class COPlatform extends Model {
   };
 
   Map<String, List> get tasks => _tasks;
-  List<dynamic> _roles = [];
+  List<dynamic> _roles = ["Common"];
 
   sb.SupabaseClient get supabaseClient => _supabaseClient;
 
@@ -43,8 +43,9 @@ class COPlatform extends Model {
           .select('role')
           .match({'email': emailId}).execute();
 
-      this._roles = roles.data[0]['role'];
-      this._roles.add("Common");
+      for (int i = 0; i < roles.data.length; i++) {
+        _roles.add(roles.data[i]["role"]);
+      }
       return true;
     }
   }
@@ -78,7 +79,7 @@ class COPlatform extends Model {
     ).execute();
 
     if (result.error != null) {
-      // Handle error
+      print(result.error?.message);
       return false;
     } else {
       // return success
