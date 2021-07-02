@@ -109,7 +109,7 @@ class COPlatform extends Model {
     final result = await this
         ._supabaseClient
         .from('courses')
-        .select('course_code, course_name, batch')
+        .select('course_code, name, batch')
         .match(
       {
         'coordinator_email': _supabaseClient.auth.user()?.email,
@@ -117,6 +117,7 @@ class COPlatform extends Model {
     ).execute();
 
     if (result.error != null) {
+      print("hii");
       print(result.error?.message);
       return false;
     } else {

@@ -58,16 +58,12 @@ class _HomePageState extends State<HomePage> {
                                   style: ButtonStyle(
                                     alignment: Alignment.centerLeft,
                                   ),
-                                  onPressed: () {
+                                  onPressed: () async {
                                     if (taskName == "Assign CO Threshold") {
-                                      setState(() {
-                                        _isloading = true;
-                                      });
-                                      bool result = widget.model.sampathFun();
+                                      bool result = await widget.model
+                                          .getAssignedCoursesForCoordinator();
+                                      print(result);
                                       if (result) {
-                                        setState(() {
-                                          _isloading = false;
-                                        });
                                         Navigator.pushNamed(
                                           context,
                                           "/" +
@@ -78,9 +74,6 @@ class _HomePageState extends State<HomePage> {
                                       }
                                     } else {
                                       print("error");
-                                      setState(() {
-                                        _isloading = false;
-                                      });
                                     }
                                   },
                                   child: Padding(
