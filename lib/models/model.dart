@@ -125,8 +125,8 @@ class COPlatform extends Model {
       _coursesAssigned = {};
 
       for (var i = 0; i < data.length; i++) {
-        if (_coursesAssigned.containsKey(data[i]['batch'])) {
-          _coursesAssigned[data[i]['batch']]?.add(
+        if (_coursesAssigned.containsKey(data[i]['course_code'][6])) {
+          _coursesAssigned[data[i]['course_code'][6]]?.add(
             Course(
               data[i]['course_code'],
               data[i]['name'],
@@ -136,7 +136,7 @@ class COPlatform extends Model {
             ),
           );
         } else {
-          _coursesAssigned[data[i]['batch']] = [
+          _coursesAssigned[data[i]['course_code'][6]] = [
             Course(
               data[i]['course_code'],
               data[i]['name'],
@@ -147,7 +147,7 @@ class COPlatform extends Model {
           ];
         }
       }
-
+      print(_coursesAssigned);
       return true;
     }
   }
