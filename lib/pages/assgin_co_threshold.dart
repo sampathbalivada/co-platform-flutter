@@ -9,8 +9,19 @@ class AssignCOThresholdPage extends StatefulWidget {
 }
 
 class _AssignCOThresholdPageState extends State<AssignCOThresholdPage> {
-  var yearDropDown = "1st Year";
+  String yearDropDown = "";
   var subjDropDown = "Subj1";
+  List<String> years = [];
+  @override
+  void initState() {
+    years = widget.model.coursesAssigned.keys.toList();
+    for (var i = 0; i < years.length; i++) {
+      years[i] = years[i] + " year";
+    }
+    yearDropDown = years[0];
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,26 +40,7 @@ class _AssignCOThresholdPageState extends State<AssignCOThresholdPage> {
                 yearDropDown = newValue!;
               });
             },
-            items: <String>['1st Year', '2nd Year', '3rd Year', '4th Year']
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-          ),
-          DropdownButton<String>(
-            value: subjDropDown,
-            icon: const Icon(Icons.arrow_drop_down),
-            iconSize: 24,
-            elevation: 16,
-            onChanged: (String? newValue) {
-              setState(() {
-                subjDropDown = newValue!;
-              });
-            },
-            items: <String>['Subj1', 'Subj2', 'Subj3', 'Sub4']
-                .map<DropdownMenuItem<String>>((String value) {
+            items: years.map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
                 child: Text(value),
