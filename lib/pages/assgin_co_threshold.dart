@@ -1,53 +1,108 @@
+import 'package:co_attainment_platform/models/model.dart';
 import 'package:flutter/material.dart';
 
 class AssignCOThresholdPage extends StatefulWidget {
   final model;
-  AssignCOThresholdPage({@required this.model});
+
+  AssignCOThresholdPage({this.model});
 
   @override
   _AssignCOThresholdPageState createState() => _AssignCOThresholdPageState();
 }
 
 class _AssignCOThresholdPageState extends State<AssignCOThresholdPage> {
-  String yearDropDown = "";
-  var subjDropDown = "Subj1";
-  List<String> years = [];
-  @override
-  void initState() {
-    years = widget.model.coursesAssigned.keys.toList();
-    for (var i = 0; i < years.length; i++) {
-      years[i] = years[i] + " year";
+  List<Widget> generateExpansionTiles() {
+    Map<String, List<Course>> coursesAssigned = widget.model.coursesAssigned;
+
+    List<Widget> expansionTiles = [];
+
+    for (var batch in coursesAssigned.keys) {
+      expansionTiles.add(
+        ExpansionTile(
+          title: Text(
+            "Batch " + batch,
+            style: TextStyle(
+              fontSize: 20,
+            ),
+          ),
+          children: [
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: coursesAssigned[batch]?.length,
+              itemBuilder: (context, index) {
+                var course = coursesAssigned[batch]?[index];
+
+                return OutlinedButton(
+                  style: ButtonStyle(
+                    alignment: Alignment.centerLeft,
+                  ),
+                  onPressed: () {
+                    widget.model.setCurrentCourse(course);
+                    Navigator.pushNamed(
+                      context,
+                      '/update_co_threshold',
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      course?.courseName,
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      );
     }
-    yearDropDown = years[0];
-    super.initState();
+
+    return expansionTiles;
+  }
+
+  List<Widget> generateExpansionTileWidgets(List<Course>? courses) {
+    List<Widget> expansionTileWidgets = [];
+
+    for (var course in courses ?? []) {
+      expansionTileWidgets.add(
+        OutlinedButton(
+          style: ButtonStyle(
+            alignment: Alignment.centerLeft,
+          ),
+          onPressed: () {},
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              course.courseName,
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return expansionTileWidgets;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Vignan's Institute of Information Technology"),
+        title: Text('Home > Course Coordinator > Assign CO Threshold'),
       ),
-      body: Column(
-        children: [
-          DropdownButton<String>(
-            value: yearDropDown,
-            icon: const Icon(Icons.arrow_drop_down),
-            iconSize: 24,
-            elevation: 16,
-            onChanged: (String? newValue) {
-              setState(() {
-                yearDropDown = newValue!;
-              });
-            },
-            items: years.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
+      body: Center(
+        child: Container(
+          width: MediaQuery.of(context).size.width * 0.25,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: generateExpansionTiles(),
           ),
-        ],
+        ),
       ),
     );
   }

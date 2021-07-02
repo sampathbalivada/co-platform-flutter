@@ -34,12 +34,15 @@ class COPlatform extends Model {
 
   List<dynamic> _roles = ["Common"];
 
+  Course? _currentCourse;
+
   // Getters
   Map<String, List> get tasks => _tasks;
   sb.SupabaseClient get supabaseClient => _supabaseClient;
   String? get emailId => _supabaseClient.auth.user()?.email;
   List<dynamic> get roles => _roles;
   Map<String, List<Course>> get coursesAssigned => _coursesAssigned;
+  Course? get currentCourse => _currentCourse;
 
   Future<bool> signIn(String emailId, String password) async {
     final response = await this
@@ -126,7 +129,7 @@ class COPlatform extends Model {
 
       for (var i = 0; i < data.length; i++) {
         if (_coursesAssigned.containsKey(data[i]['course_code'][6])) {
-          _coursesAssigned[data[i]['course_code'][6]]?.add(
+          _coursesAssigned[data[i]['batch']]?.add(
             Course(
               data[i]['course_code'],
               data[i]['name'],
@@ -136,7 +139,7 @@ class COPlatform extends Model {
             ),
           );
         } else {
-          _coursesAssigned[data[i]['course_code'][6]] = [
+          _coursesAssigned[data[i]['batch']] = [
             Course(
               data[i]['course_code'],
               data[i]['name'],
@@ -147,7 +150,33 @@ class COPlatform extends Model {
           ];
         }
       }
-      print(_coursesAssigned);
+      // print(_coursesAssigned);
+      return true;
+    }
+  }
+
+  void setCurrentCourse(Course currentCourse) {
+    this._currentCourse = currentCourse;
+  }
+
+  Future<bool> updateCOThreshold(List<int> thresholdValues, int mid) async {
+    print('Model');
+
+    final result = await this._supabaseClient.from('co_threshold').upsert({
+      'course_code': _currentCourse?.courseCode,
+      'batch': _currentCourse?.batch,
+      'one': thresholdValues[0],
+      'two': thresholdValues[1],
+      'three': thresholdValues[2],
+      'four': thresholdValues[3],
+      'mid': mid,
+    }).execute();
+
+    if (result.error != null) {
+      print(result.error?.message);
+      return false;
+    } else {
+      // return success
       return true;
     }
   }

@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
                                     if (taskName == "Assign CO Threshold") {
                                       bool result = await widget.model
                                           .getAssignedCoursesForCoordinator();
-                                      print(result);
+                                      // print(result);
                                       if (result) {
                                         Navigator.pushNamed(
                                           context,

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'pages/home.dart';
 import 'pages/login.dart';
+import 'pages/update_co_threshold.dart';
 
 main(List<String> args) {
   COPlatform _model = COPlatform();
@@ -30,6 +31,8 @@ class MainApp extends StatelessWidget {
         "/assign_co_threshold": (context) =>
             AssignCOThresholdPage(model: _model),
         "/check_statistics": (context) => UploadMarks(model: _model),
+        "/update_co_threshold": (context) =>
+            UpdateCOThresholdPage(model: _model),
       },
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
