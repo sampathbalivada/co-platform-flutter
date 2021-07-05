@@ -92,6 +92,7 @@ class COPlatform extends Model {
     String batch,
     String courseName,
     String coordinatorEmail,
+    String branch_code,
   ) async {
     final result = await this._supabaseClient.from('courses').upsert(
       {
@@ -99,6 +100,7 @@ class COPlatform extends Model {
         'batch': batch,
         'name': courseName,
         'coordinator_email': coordinatorEmail,
+        'branch_code': branch_code,
       },
     ).execute();
 
