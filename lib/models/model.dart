@@ -113,6 +113,48 @@ class COPlatform extends Model {
     }
   }
 
+  Future<bool> addFacultyToCourse(
+    String courseCode,
+    String batch,
+    int branchCode,
+    String facultyEmail,
+  ) async {
+    final facultyEmails = await this
+        ._supabaseClient
+        .from('courses')
+        .select('faculty_emails')
+        .match({
+      'course_code': courseCode,
+      'batch': batch,
+      'branch_code': branchCode,
+    }).execute();
+
+    var facultyEmailIDsModified = facultyEmails.data[0]['faculty_emails'];
+
+    if (facultyEmailIDsModified.contains(facultyEmail)) {
+      return false;
+    }
+
+    facultyEmailIDsModified.add(facultyEmail);
+
+    final result = await this._supabaseClient.from('courses').upsert(
+      {
+        'course_code': courseCode,
+        'batch': batch,
+        'branch_code': branchCode,
+        'faculty_emails': facultyEmailIDsModified,
+      },
+    ).execute();
+
+    if (result.error != null) {
+      print(result.error?.message);
+      return false;
+    } else {
+      // return success
+      return true;
+    }
+  }
+
   Future<bool> getAssignedCoursesForCoordinator() async {
     final result = await this
         ._supabaseClient

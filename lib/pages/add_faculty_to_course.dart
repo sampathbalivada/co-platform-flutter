@@ -94,8 +94,8 @@ class _AddFacultyToCourseState extends State<AddFacultyToCourse> {
               ),
               buildCustomTextField(
                   branchCode, TextInputType.emailAddress, "Branch Code"),
-              buildCustomTextField(facultyEmail, TextInputType.emailAddress,
-                  "Coordinator Email"),
+              buildCustomTextField(
+                  facultyEmail, TextInputType.emailAddress, "Faculty Email"),
               Container(
                 height: 60,
                 padding: EdgeInsets.all(10),
@@ -108,12 +108,14 @@ class _AddFacultyToCourseState extends State<AddFacultyToCourse> {
                     setState(() {
                       _isloading = true;
                     });
-                    //add a function here
-                    bool result = await widget.model.newFunction(
-                        courseCode.text,
-                        yearSelected,
-                        facultyEmail.text,
-                        int.parse(branchCode.text));
+
+                    bool result = await widget.model.addFacultyToCourse(
+                      courseCode.text,
+                      yearSelected,
+                      int.parse(branchCode.text),
+                      facultyEmail.text,
+                    );
+
                     if (result) {
                       showAlertDialog(
                         context,
@@ -128,6 +130,11 @@ class _AddFacultyToCourseState extends State<AddFacultyToCourse> {
                         branchCode.text = "";
                       });
                     } else {
+                      showAlertDialog(
+                        context,
+                        'Error while adding Faculty',
+                        'Internal Application Error: Faculty Email-ID might already exist.',
+                      );
                       setState(() {
                         courseCode.text = "";
                         facultyEmail.text = "";
