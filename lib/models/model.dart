@@ -180,4 +180,49 @@ class COPlatform extends Model {
       return true;
     }
   }
+
+  Future<bool> getAssignedCoursesForFaculty() async {
+    final result = await this
+        ._supabaseClient
+        .from('courses')
+        .select('course_code, name, batch')
+        .contains('faculty_emails', ['me@sampath.dev']).execute();
+
+    if (result.error != null) {
+      print(result.error?.message);
+      return false;
+    } else {
+      // return success
+
+      var data = result.data;
+
+      _coursesAssigned = {};
+
+      for (var i = 0; i < data.length; i++) {
+        if (_coursesAssigned.containsKey(data[i]['course_code'][6])) {
+          _coursesAssigned[data[i]['batch']]?.add(
+            Course(
+              data[i]['course_code'],
+              data[i]['name'],
+              data[i]['batch'],
+              int.parse(data[i]['course_code'][6]),
+              int.parse(data[i]['course_code'][7]),
+            ),
+          );
+        } else {
+          _coursesAssigned[data[i]['batch']] = [
+            Course(
+              data[i]['course_code'],
+              data[i]['name'],
+              data[i]['batch'],
+              int.parse(data[i]['course_code'][6]),
+              int.parse(data[i]['course_code'][7]),
+            ),
+          ];
+        }
+      }
+      // print(_coursesAssigned);
+      return true;
+    }
+  }
 }

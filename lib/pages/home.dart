@@ -59,22 +59,17 @@ class _HomePageState extends State<HomePage> {
                                     alignment: Alignment.centerLeft,
                                   ),
                                   onPressed: () async {
+                                    bool result = true;
+
                                     if (taskName == "Assign CO Threshold") {
-                                      bool result = await widget.model
+                                      result = await widget.model
                                           .getAssignedCoursesForCoordinator();
-                                      // print(result);
-                                      if (result) {
-                                        Navigator.pushNamed(
-                                          context,
-                                          "/" +
-                                              taskName
-                                                  .replaceAll(' ', '_')
-                                                  .toLowerCase(),
-                                        );
-                                      } else {
-                                        print("error");
-                                      }
-                                    } else {
+                                    } else if (taskName == "Upload Marks") {
+                                      result = await widget.model
+                                          .getAssignedCoursesForFaculty();
+                                    }
+
+                                    if (result) {
                                       Navigator.pushNamed(
                                         context,
                                         "/" +
@@ -82,6 +77,8 @@ class _HomePageState extends State<HomePage> {
                                                 .replaceAll(' ', '_')
                                                 .toLowerCase(),
                                       );
+                                    } else {
+                                      print('error');
                                     }
                                   },
                                   child: Padding(
