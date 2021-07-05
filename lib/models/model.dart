@@ -46,6 +46,10 @@ class COPlatform extends Model {
   Map<String, List<Course>> get coursesAssigned => _coursesAssigned;
   Course? get currentCourse => _currentCourse;
 
+  // =============
+  // === AUTH ====
+  // =============
+
   Future<bool> signIn(String emailId, String password) async {
     final response = await this
         .supabaseClient
@@ -86,6 +90,10 @@ class COPlatform extends Model {
       return true;
     }
   }
+
+  // =============
+  // ==== HOD ====
+  // =============
 
   Future<bool> addCourse(
     String courseCode,
@@ -129,7 +137,15 @@ class COPlatform extends Model {
       'branch_code': branchCode,
     }).execute();
 
-    var facultyEmailIDsModified = facultyEmails.data[0]['faculty_emails'];
+    var facultyEmailIDsModified;
+
+    if (facultyEmails.data[0]['faculty_emails'] == null) {
+      facultyEmailIDsModified = [];
+    } else {
+      facultyEmailIDsModified = facultyEmails.data[0]['faculty_emails'];
+    }
+
+    print(facultyEmailIDsModified);
 
     if (facultyEmailIDsModified.contains(facultyEmail)) {
       return false;
@@ -151,9 +167,26 @@ class COPlatform extends Model {
       return false;
     } else {
       // return success
-      return true;
+      final result = await this._supabaseClient.from('roles_assigned').upsert(
+        {
+          'email': facultyEmail,
+          'role': 'Faculty',
+          'branch_code': 0,
+        },
+      ).execute();
+
+      if (result.error != null) {
+        print(result.error?.message);
+        return false;
+      } else {
+        return true;
+      }
     }
   }
+
+  // =====================
+  // ==== Coordinator ====
+  // =====================
 
   Future<bool> getAssignedCoursesForCoordinator() async {
     final result = await this
