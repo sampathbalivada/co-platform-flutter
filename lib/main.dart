@@ -4,6 +4,7 @@ import 'package:co_attainment_platform/pages/assgin_co_threshold.dart';
 import 'package:co_attainment_platform/pages/upload_marks.dart';
 import 'package:flutter/material.dart';
 
+import 'pages/add_faculty_to_course.dart';
 import 'pages/home.dart';
 import 'pages/login.dart';
 import 'pages/update_co_threshold.dart';
@@ -31,6 +32,8 @@ class MainApp extends StatelessWidget {
         "/assign_co_threshold": (context) =>
             AssignCOThresholdPage(model: _model),
         "/check_statistics": (context) => UploadMarks(model: _model),
+        "/add_faculty_to_course": (context) =>
+            AddFacultyToCourse(model: _model),
         "/update_co_threshold": (context) =>
             UpdateCOThresholdPage(model: _model),
       },
