@@ -7,6 +7,8 @@ class Course {
   final batch;
   final year;
   final semester;
+  final id;
+  final branchCode;
 
   Course(
     this.courseCode,
@@ -14,6 +16,8 @@ class Course {
     this.batch,
     this.year,
     this.semester,
+    this.id,
+    this.branchCode,
   );
 }
 
@@ -192,7 +196,7 @@ class COPlatform extends Model {
     final result = await this
         ._supabaseClient
         .from('courses')
-        .select('course_code, name, batch')
+        .select('course_code, name, batch, branch_code, course_id')
         .match(
       {
         'coordinator_email': _supabaseClient.auth.user()?.email,
@@ -218,6 +222,8 @@ class COPlatform extends Model {
               data[i]['batch'],
               int.parse(data[i]['course_code'][6]),
               int.parse(data[i]['course_code'][7]),
+              data[i]['course_id'],
+              data[i]['branch'],
             ),
           );
         } else {
@@ -228,6 +234,8 @@ class COPlatform extends Model {
               data[i]['batch'],
               int.parse(data[i]['course_code'][6]),
               int.parse(data[i]['course_code'][7]),
+              data[i]['course_id'],
+              data[i]['branch'],
             ),
           ];
         }
@@ -289,6 +297,8 @@ class COPlatform extends Model {
               data[i]['batch'],
               int.parse(data[i]['course_code'][6]),
               int.parse(data[i]['course_code'][7]),
+              data[i]['course_id'],
+              data[i]['branch'],
             ),
           );
         } else {
@@ -299,6 +309,8 @@ class COPlatform extends Model {
               data[i]['batch'],
               int.parse(data[i]['course_code'][6]),
               int.parse(data[i]['course_code'][7]),
+              data[i]['course_id'],
+              data[i]['branch'],
             ),
           ];
         }
