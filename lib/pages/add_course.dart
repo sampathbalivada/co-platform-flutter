@@ -13,6 +13,7 @@ class _AddCoursePageState extends State<AddCoursePage> {
   bool _isloading = false;
   TextEditingController courseCode = TextEditingController();
   TextEditingController courseName = TextEditingController();
+  TextEditingController branchCode = TextEditingController();
 
   TextEditingController coordinatorEmail = TextEditingController();
   String yearSelected = "None";
@@ -96,6 +97,8 @@ class _AddCoursePageState extends State<AddCoursePage> {
                   ),
                 ),
               ),
+              buildCustomTextField(
+                  branchCode, TextInputType.emailAddress, "Branch Code"),
               buildCustomTextField(coordinatorEmail, TextInputType.emailAddress,
                   "Coordinator Email"),
               Container(
@@ -110,8 +113,12 @@ class _AddCoursePageState extends State<AddCoursePage> {
                     setState(() {
                       _isloading = true;
                     });
-                    bool result = await widget.model.addCourse(courseCode.text,
-                        yearSelected, courseName.text, coordinatorEmail.text);
+                    bool result = await widget.model.addCourse(
+                        courseCode.text,
+                        yearSelected,
+                        courseName.text,
+                        coordinatorEmail.text,
+                        int.parse(branchCode.text));
                     if (result) {
                       showAlertDialog(
                         context,
@@ -124,6 +131,7 @@ class _AddCoursePageState extends State<AddCoursePage> {
                         coordinatorEmail.text = "";
                         yearSelected = "None";
                         _isloading = false;
+                        branchCode.text = "";
                       });
                     } else {
                       setState(() {
@@ -132,6 +140,7 @@ class _AddCoursePageState extends State<AddCoursePage> {
                         coordinatorEmail.text = "";
                         yearSelected = "None";
                         _isloading = false;
+                        branchCode.text = "";
                       });
                       print("Error");
                     }
