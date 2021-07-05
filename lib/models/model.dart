@@ -23,6 +23,8 @@ class COPlatform extends Model {
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYyNTEzMzU5NSwiZXhwIjoxOTQwNzA5NTk1fQ.UAGKph4zLvAMnF1ehFGpaQFpHlhqT6Exu2x5T1Udfus',
   );
 
+  int _branchCode = 0;
+
   Map<String, List> _tasks = {
     "Faculty": ["Upload Marks"],
     "HOD": ["Calculate Statistics", "Add Course"],
@@ -59,12 +61,15 @@ class COPlatform extends Model {
       final roles = await this
           ._supabaseClient
           .from('roles_assigned')
-          .select('role')
+          .select('role, branch_code')
           .match({'email': emailId}).execute();
 
       for (int i = 0; i < roles.data.length; i++) {
         _roles.add(roles.data[i]["role"]);
+        _branchCode =
+            _branchCode == 0 ? roles.data[i]["branch_code"] : _branchCode;
       }
+
       return true;
     }
   }
