@@ -10,7 +10,6 @@ class UpdateCOThresholdPage extends StatefulWidget {
 }
 
 class _UpdateCOThresholdPageState extends State<UpdateCOThresholdPage> {
-  String _mid = "1";
   TextEditingController _thresholdForCO1 = TextEditingController();
   TextEditingController _thresholdForCO2 = TextEditingController();
   TextEditingController _thresholdForCO3 = TextEditingController();
@@ -61,40 +60,6 @@ class _UpdateCOThresholdPageState extends State<UpdateCOThresholdPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    'Select Mid Exam:',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  DropdownButton<String>(
-                    value: _mid,
-                    //elevation: 5,
-                    style: TextStyle(color: Colors.black),
-
-                    items: <String>['1', '2']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    hint: Text(
-                      "Please choose a langauage",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    onChanged: (String? value) {
-                      setState(() {
-                        _mid = value ?? '1';
-                      });
-                    },
-                  ),
-                ],
-              ),
               buildCustomTextField(
                 _thresholdForCO1,
                 TextInputType.number,
@@ -131,16 +96,20 @@ class _UpdateCOThresholdPageState extends State<UpdateCOThresholdPage> {
                           _thresholdForCO3.text +
                           _thresholdForCO4.text,
                     );
-                    var result = await widget.model.updateCOThreshold([
-                      int.parse(_thresholdForCO1.text),
-                      int.parse(_thresholdForCO2.text),
-                      int.parse(_thresholdForCO3.text),
-                      int.parse(_thresholdForCO4.text),
-                    ], int.parse(_mid));
+                    var result = await widget.model.updateCOThreshold(
+                      [
+                        int.parse(_thresholdForCO1.text),
+                        int.parse(_thresholdForCO2.text),
+                        int.parse(_thresholdForCO3.text),
+                        int.parse(_thresholdForCO4.text),
+                      ],
+                    );
 
                     if (result) {
-                      showAlertDialog(context, 'CO Threshold Updated',
-                          'The CO Threshold for Mid $_mid of course ${widget.model.currentCourse.courseName} with course code ${widget.model.currentCourse.courseCode} have been updated.');
+                      showAlertDialog(
+                          context,
+                          'CO Threshold Updated and Questions are mapped to CO',
+                          'The CO Threshold for Mid ${widget.model.mid} of course ${widget.model.currentCourse.courseName} with course code ${widget.model.currentCourse.courseCode} have been updated.');
                     } else {
                       showAlertDialog(context, 'Threshold Update Error',
                           'Unable to update CO Threshold. Contact admin for further assistance.');
@@ -150,7 +119,6 @@ class _UpdateCOThresholdPageState extends State<UpdateCOThresholdPage> {
                     _thresholdForCO2.text = '';
                     _thresholdForCO3.text = '';
                     _thresholdForCO4.text = '';
-                    _mid = '1';
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
