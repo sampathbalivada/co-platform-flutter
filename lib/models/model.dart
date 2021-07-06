@@ -379,7 +379,12 @@ class COPlatform extends Model {
         ._supabaseClient
         .from('courses')
         .select('course_code, name, batch')
-        .contains('faculty_emails', ['me@sampath.dev']).execute();
+        .contains(
+      'faculty_emails',
+      [
+        this._supabaseClient.auth.currentUser?.email,
+      ],
+    ).execute();
 
     if (result.error != null) {
       print(result.error?.message);
@@ -418,7 +423,7 @@ class COPlatform extends Model {
           ];
         }
       }
-      // print(_coursesAssigned);
+      print(_coursesAssigned);
       return true;
     }
   }

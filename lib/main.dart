@@ -3,6 +3,7 @@ import 'package:co_attainment_platform/pages/add_course.dart';
 import 'package:co_attainment_platform/pages/assign_co_threshold.dart';
 import 'package:co_attainment_platform/pages/co_question_mapping.dart';
 import 'package:co_attainment_platform/pages/upload_marks.dart';
+import 'package:co_attainment_platform/pages/upload_marks_select_file.dart';
 import 'package:flutter/material.dart';
 
 import 'pages/add_faculty_to_course.dart';
@@ -37,8 +38,8 @@ class MainApp extends StatelessWidget {
             AddFacultyToCourse(model: _model),
         "/update_co_threshold": (context) =>
             UpdateCOThresholdPage(model: _model),
-        "/co_question_mapping": (context) =>
-            COQuestionMapping(model: _model),
+        "/co_question_mapping": (context) => COQuestionMapping(model: _model),
+        "/upload_marks_select_file": (context) => UploadMarksSelectFile(model: _model),
       },
       debugShowCheckedModeBanner: false,
       initialRoute: '/',

@@ -1,4 +1,4 @@
-import 'package:file_picker/file_picker.dart';
+import 'package:co_attainment_platform/models/model.dart';
 import 'package:flutter/material.dart';
 
 class UploadMarks extends StatefulWidget {
@@ -11,7 +11,83 @@ class UploadMarks extends StatefulWidget {
 }
 
 class _UploadMarksState extends State<UploadMarks> {
-  var path = "";
+  List<Widget> generateExpansionTiles() {
+    Map<String, List<Course>> coursesAssigned = widget.model.coursesAssigned;
+
+    List<Widget> expansionTiles = [];
+
+    for (var batch in coursesAssigned.keys) {
+      expansionTiles.add(
+        ExpansionTile(
+          title: Text(
+            "Batch " + batch,
+            style: TextStyle(
+              fontSize: 20,
+            ),
+          ),
+          children: [
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: coursesAssigned[batch]?.length,
+              itemBuilder: (context, index) {
+                var course = coursesAssigned[batch]?[index];
+
+                return OutlinedButton(
+                  style: ButtonStyle(
+                    alignment: Alignment.centerLeft,
+                  ),
+                  onPressed: () {
+                    widget.model.setCurrentCourse(course);
+                    Navigator.pushNamed(
+                      context,
+                      '/upload_marks_select_file',
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      course?.courseName,
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      );
+    }
+
+    return expansionTiles;
+  }
+
+  List<Widget> generateExpansionTileWidgets(List<Course>? courses) {
+    List<Widget> expansionTileWidgets = [];
+
+    for (var course in courses ?? []) {
+      expansionTileWidgets.add(
+        OutlinedButton(
+          style: ButtonStyle(
+            alignment: Alignment.centerLeft,
+          ),
+          onPressed: () {},
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              course.courseName,
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return expansionTileWidgets;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,24 +95,14 @@ class _UploadMarksState extends State<UploadMarks> {
       appBar: AppBar(
         title: Text('Home > Upload Marks'),
       ),
-      body: Column(
-        children: [
-          OutlinedButton(
-            onPressed: () async {
-              FilePickerResult? result = await FilePicker.platform.pickFiles(
-                allowMultiple: false,
-                withData: true,
-              );
-
-              var fileBytes = result?.files.single.bytes;
-
-              Iterable<int>? fileIntList = fileBytes?.toList();
-
-              print(String.fromCharCodes(fileIntList!));
-            },
-            child: Text("Pick a File"),
+      body: Center(
+        child: Container(
+          width: MediaQuery.of(context).size.width * 0.25,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: generateExpansionTiles(),
           ),
-        ],
+        ),
       ),
     );
   }
