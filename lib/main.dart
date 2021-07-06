@@ -11,7 +11,7 @@ import 'pages/home.dart';
 import 'pages/login.dart';
 import 'pages/update_co_threshold.dart';
 
-main(List<String> args) {
+main() {
   COPlatform _model = COPlatform();
 
   runApp(MainApp(_model));
@@ -39,7 +39,8 @@ class MainApp extends StatelessWidget {
         "/update_co_threshold": (context) =>
             UpdateCOThresholdPage(model: _model),
         "/co_question_mapping": (context) => COQuestionMapping(model: _model),
-        "/upload_marks_select_file": (context) => UploadMarksSelectFile(model: _model),
+        "/upload_marks_select_file": (context) =>
+            UploadMarksSelectFile(model: _model),
       },
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
