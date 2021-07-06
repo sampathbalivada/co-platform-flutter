@@ -69,6 +69,7 @@ class COPlatform extends Model {
   Map<String, List<Course>> get coursesAssigned => _coursesAssigned;
   Course? get currentCourse => _currentCourse;
   List<Question> get questions => _questions;
+  int get mid => _mid;
 
   // =============
   // ===Setters===
@@ -273,28 +274,6 @@ class COPlatform extends Model {
     }
   }
 
-  Future<bool> updateCOThreshold(List<int> thresholdValues, int mid) async {
-    print('Model');
-
-    final result = await this._supabaseClient.from('co_threshold').upsert({
-      'course_code': _currentCourse?.courseCode,
-      'batch': _currentCourse?.batch,
-      'one': thresholdValues[0],
-      'two': thresholdValues[1],
-      'three': thresholdValues[2],
-      'four': thresholdValues[3],
-      'mid': mid,
-    }).execute();
-
-    if (result.error != null) {
-      print(result.error?.message);
-      return false;
-    } else {
-      // return success
-      return true;
-    }
-  }
-
   void storeCOMapping(
     int numberOfQuestions,
     List<int> COMapping,
@@ -306,12 +285,90 @@ class COPlatform extends Model {
     List<Question> questions = [];
 
     for (var i = 0; i < numberOfQuestions; i++) {
-      questions.add(Question(i, maxMarks[i], COMapping[i]));
+      questions.add(Question(i + 1, maxMarks[i], COMapping[i]));
     }
 
     _questions = questions;
 
     print(questions);
+  }
+
+  Future<bool> updateCOMappingAndThreshold(List<int> thresholdValues) async {
+    int courseMidIdentifierID;
+
+    // Push values to course_mid_dentifier
+
+    final addNewMidForCourse =
+        await this._supabaseClient.from('course_mid_identifier').upsert(
+      {
+        'course_id': _currentCourse?.id,
+        'mid': _mid.toString(),
+      },
+    ).execute();
+
+    if (addNewMidForCourse.error != null) {
+      print('Error: Add Mid For Course');
+      print(addNewMidForCourse.error?.message);
+      return false;
+    } else {
+      print(addNewMidForCourse.data);
+      // Get ID from course_mid_identifier
+      courseMidIdentifierID = addNewMidForCourse.data[0]['id'];
+    }
+
+    print('CO Mapping Start');
+    // Push values to co_mapping
+    var questionCOMapping = [];
+
+    for (var question in _questions) {
+      questionCOMapping.add({
+        'id': courseMidIdentifierID,
+        'question_number': question.number,
+        'max_marks': question.maxMarks,
+        'co': question.COMapped,
+      });
+    }
+
+    final pushValesToCOMapping = await this
+        ._supabaseClient
+        .from('co_mapping')
+        .upsert(questionCOMapping)
+        .execute();
+
+    if (pushValesToCOMapping.error != null) {
+      print('Error: Push Values to CO Mapping');
+      print(pushValesToCOMapping.error?.message);
+      return false;
+    } else {
+      print(pushValesToCOMapping.data);
+    }
+
+    print('CO Threshold Start');
+    // Push values to co_threshold
+    var COThresholdMapping = [];
+
+    for (var i = 0; i < thresholdValues.length; i++) {
+      COThresholdMapping.add({
+        'id': courseMidIdentifierID,
+        'co': i + 1,
+        'threshold': thresholdValues[i],
+      });
+    }
+
+    final result = await this
+        ._supabaseClient
+        .from('co_threshold')
+        .upsert(COThresholdMapping)
+        .execute();
+
+    if (result.error != null) {
+      print('Error: Push Values to CO Threshold');
+      print(result.error?.message);
+      return false;
+    } else {
+      // return success
+      return true;
+    }
   }
 
   // =================

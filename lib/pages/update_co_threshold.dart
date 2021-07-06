@@ -20,14 +20,14 @@ class _UpdateCOThresholdPageState extends State<UpdateCOThresholdPage> {
     Widget okButton = TextButton(
       child: Text("OK"),
       onPressed: () {
-        Navigator.of(context).pop();
+        Navigator.popUntil(context, ModalRoute.withName('/home'));
       },
     );
 
     // Create AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text(title),
-      content: Text(content),
+      content: Text(content), 
       actions: [
         okButton,
       ],
@@ -89,14 +89,7 @@ class _UpdateCOThresholdPageState extends State<UpdateCOThresholdPage> {
                 padding: EdgeInsets.all(8),
                 child: ElevatedButton(
                   onPressed: () async {
-                    print('HI');
-                    print(
-                      _thresholdForCO1.text +
-                          _thresholdForCO2.text +
-                          _thresholdForCO3.text +
-                          _thresholdForCO4.text,
-                    );
-                    var result = await widget.model.updateCOThreshold(
+                    var result = await widget.model.updateCOMappingAndThreshold(
                       [
                         int.parse(_thresholdForCO1.text),
                         int.parse(_thresholdForCO2.text),
@@ -107,9 +100,10 @@ class _UpdateCOThresholdPageState extends State<UpdateCOThresholdPage> {
 
                     if (result) {
                       showAlertDialog(
-                          context,
-                          'CO Threshold Updated and Questions are mapped to CO',
-                          'The CO Threshold for Mid ${widget.model.mid} of course ${widget.model.currentCourse.courseName} with course code ${widget.model.currentCourse.courseCode} have been updated.');
+                        context,
+                        'CO Threshold Updated and Questions are mapped to CO',
+                        'The CO Threshold for Mid ${widget.model.mid} of course ${widget.model.currentCourse.courseName} with course code ${widget.model.currentCourse.courseCode} have been updated.',
+                      );
                     } else {
                       showAlertDialog(context, 'Threshold Update Error',
                           'Unable to update CO Threshold. Contact admin for further assistance.');
