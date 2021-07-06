@@ -276,6 +276,7 @@ class COPlatform extends Model {
 
   void storeCOMapping(
     int numberOfQuestions,
+    // ignore: non_constant_identifier_names
     List<int> COMapping,
     List<int> maxMarks,
     int mid,
@@ -342,6 +343,7 @@ class COPlatform extends Model {
     }
 
     // Push values to co_threshold
+    // ignore: non_constant_identifier_names
     var COThresholdMapping = [];
 
     for (var i = 0; i < thresholdValues.length; i++) {
