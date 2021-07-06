@@ -53,6 +53,8 @@ class COPlatform extends Model {
 
   List<dynamic> _roles = ["Common"];
 
+  int _mid = 1;
+
   Course? _currentCourse;
 
   List<Question> _questions = [];
@@ -297,7 +299,10 @@ class COPlatform extends Model {
     int numberOfQuestions,
     List<int> COMapping,
     List<int> maxMarks,
+    int mid,
   ) {
+    _mid = mid;
+
     List<Question> questions = [];
 
     for (var i = 0; i < numberOfQuestions; i++) {
@@ -305,6 +310,8 @@ class COPlatform extends Model {
     }
 
     _questions = questions;
+
+    print(questions);
   }
 
   // =================

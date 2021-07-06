@@ -29,6 +29,8 @@ class _COQuestionMappingState extends State<COQuestionMapping> {
 
   int _numberOfQuestions = 0;
 
+  String _mid = '1';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,147 +38,195 @@ class _COQuestionMappingState extends State<COQuestionMapping> {
         title: Text('CO Question Mapping'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
+        child: ListView(
           children: [
-            Container(
-              width: MediaQuery.of(context).size.width * 0.25,
-              child: buildCustomTextField(
-                  _numberOfQuestionsController,
-                  TextInputType.number,
-                  'Number of Questions',
-                  'Enter the number of questions', onChanged: (value) {
-                setState(() {
-                  int numberOfQuestions = int.parse(value);
-                  _numberOfQuestions =
-                      numberOfQuestions >= 12 ? 12 : numberOfQuestions;
-                });
-              }),
-            ),
-            Row(
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
+                SizedBox(height: 24),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.25,
-                  child: Text(
-                    'Question Number',
-                    textAlign: TextAlign.center,
-                  ),
+                  child: buildCustomTextField(
+                      _numberOfQuestionsController,
+                      TextInputType.number,
+                      'Number of Questions',
+                      'Enter the number of questions', onChanged: (value) {
+                    setState(() {
+                      int numberOfQuestions = int.parse(value);
+                      _numberOfQuestions =
+                          numberOfQuestions >= 12 ? 12 : numberOfQuestions;
+                    });
+                  }),
                 ),
-                SizedBox(width: 12),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.25,
-                  child: Text(
-                    'CO Assigned',
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                SizedBox(width: 12),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.25,
-                  child: Text(
-                    'Question Number',
-                    textAlign: TextAlign.center,
-                  ),
-                )
-              ],
-            ),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: _numberOfQuestions,
-              itemBuilder: (context, index) {
-                return Align(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.25,
-                        child: Text(
-                          'Question ${index + 1}',
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      SizedBox(width: 12),
-                      DropdownButtonHideUnderline(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          width: MediaQuery.of(context).size.width * 0.25,
-                          padding: EdgeInsets.only(left: 12, right: 12),
-                          child: DropdownButton<String>(
-                            value: _COController[index],
-                            //elevation: 5,
-                            style: TextStyle(color: Colors.black),
+                SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Select Mid Exam:',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    SizedBox(width: 24),
+                    DropdownButton<String>(
+                      value: _mid,
+                      //elevation: 5,
+                      style: TextStyle(color: Colors.black),
 
-                            items: <String>['1', '2', '3', '4']
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Container(
-                                    child: Text('Course Outcome ' + value)),
-                              );
-                            }).toList(),
-                            hint: Text(
-                              "Please choose a langauage",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            onChanged: (String? value) {
-                              setState(() {
-                                _COController[index] = value ?? '1';
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 12),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.25,
-                        child: buildCustomTextField(
-                            _questionController[index],
-                            TextInputType.number,
-                            'Question ${index + 1}',
-                            'Enter Max Marks'),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-            _numberOfQuestions == 0
-                ? Container()
-                : Container(
-                    width: MediaQuery.of(context).size.width * 0.15,
-                    padding: EdgeInsets.all(8),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        List<int> _coControl = [];
-                        List<int> _marksControl = [];
-                        for (int i = 0; i < _numberOfQuestions; i++) {
-                          _marksControl
-                              .add(int.parse(_questionController[i].text));
-                          _coControl.add(int.parse(_COController[i]));
-                        }
-                        widget.model.function(
-                            _numberOfQuestions, _coControl, _marksControl);
-
-                        Navigator.pushNamed(context, "/update_co_threshold");
+                      items: <String>['1', '2']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? value) {
+                        setState(() {
+                          _mid = value ?? '1';
+                        });
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text(
-                          'Map Questions to CO',
-                          style: TextStyle(fontSize: 18),
-                        ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 24),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.25,
+                      child: Text(
+                        'Question Number',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 18),
                       ),
                     ),
-                  )
+                    SizedBox(width: 12),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.25,
+                      child: Text(
+                        'CO Assigned',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    SizedBox(width: 12),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.25,
+                      child: Text(
+                        'Max Marks for Question',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(height: 24),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: _numberOfQuestions,
+                  itemBuilder: (context, index) {
+                    return Align(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.25,
+                            child: Text(
+                              'Question ${index + 1}',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          SizedBox(width: 12),
+                          DropdownButtonHideUnderline(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              width: MediaQuery.of(context).size.width * 0.25,
+                              padding: EdgeInsets.only(left: 12, right: 12),
+                              child: DropdownButton<String>(
+                                value: _COController[index],
+                                //elevation: 5,
+                                style: TextStyle(color: Colors.black),
+
+                                items: <String>[
+                                  '1',
+                                  '2',
+                                  '3',
+                                  '4'
+                                ].map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Container(
+                                        child: Text('Course Outcome ' + value)),
+                                  );
+                                }).toList(),
+                                hint: Text(
+                                  "Please choose a langauage",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                onChanged: (String? value) {
+                                  setState(() {
+                                    _COController[index] = value ?? '1';
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 12),
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.25,
+                            child: buildCustomTextField(
+                                _questionController[index],
+                                TextInputType.number,
+                                'Question ${index + 1}',
+                                'Enter Max Marks'),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                _numberOfQuestions == 0
+                    ? Container()
+                    : Container(
+                        width: MediaQuery.of(context).size.width * 0.15,
+                        padding: EdgeInsets.all(8),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            List<int> _coControl = [];
+                            List<int> _marksControl = [];
+                            for (int i = 0; i < _numberOfQuestions; i++) {
+                              _marksControl
+                                  .add(int.parse(_questionController[i].text));
+                              _coControl.add(int.parse(_COController[i]));
+                            }
+                            widget.model.storeCOMapping(
+                              _numberOfQuestions,
+                              _coControl,
+                              _marksControl,
+                              int.parse(_mid),
+                            );
+
+                            Navigator.pushNamed(
+                                context, "/update_co_threshold");
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Text(
+                              'Map Questions to CO',
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ),
+                        ),
+                      )
+              ],
+            ),
           ],
         ),
       ),
