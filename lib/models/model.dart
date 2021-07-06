@@ -240,10 +240,12 @@ class COPlatform extends Model {
 
       var data = result.data;
 
+      print(data);
+
       _coursesAssigned = {};
 
       for (var i = 0; i < data.length; i++) {
-        if (_coursesAssigned.containsKey(data[i]['course_code'][6])) {
+        if (_coursesAssigned.containsKey(data[i]['batch'])) {
           _coursesAssigned[data[i]['batch']]?.add(
             Course(
               data[i]['course_code'],
@@ -252,7 +254,7 @@ class COPlatform extends Model {
               int.parse(data[i]['course_code'][6]),
               int.parse(data[i]['course_code'][7]),
               data[i]['course_id'],
-              data[i]['branch'],
+              data[i]['branch_code'],
             ),
           );
         } else {
@@ -264,12 +266,12 @@ class COPlatform extends Model {
               int.parse(data[i]['course_code'][6]),
               int.parse(data[i]['course_code'][7]),
               data[i]['course_id'],
-              data[i]['branch'],
+              data[i]['branch_code'],
             ),
           ];
         }
       }
-      // print(_coursesAssigned);
+      print(_coursesAssigned);
       return true;
     }
   }
@@ -378,7 +380,7 @@ class COPlatform extends Model {
     final result = await this
         ._supabaseClient
         .from('courses')
-        .select('course_code, name, batch')
+        .select('course_code, name, batch, course_id, branch_code')
         .contains(
       'faculty_emails',
       [
@@ -394,10 +396,12 @@ class COPlatform extends Model {
 
       var data = result.data;
 
+      print(data);
+
       _coursesAssigned = {};
 
       for (var i = 0; i < data.length; i++) {
-        if (_coursesAssigned.containsKey(data[i]['course_code'][6])) {
+        if (_coursesAssigned.containsKey(data[i]['batch'])) {
           _coursesAssigned[data[i]['batch']]?.add(
             Course(
               data[i]['course_code'],
@@ -406,7 +410,7 @@ class COPlatform extends Model {
               int.parse(data[i]['course_code'][6]),
               int.parse(data[i]['course_code'][7]),
               data[i]['course_id'],
-              data[i]['branch'],
+              data[i]['branch_code'],
             ),
           );
         } else {
@@ -418,22 +422,30 @@ class COPlatform extends Model {
               int.parse(data[i]['course_code'][6]),
               int.parse(data[i]['course_code'][7]),
               data[i]['course_id'],
-              data[i]['branch'],
+              data[i]['branch_code'],
             ),
           ];
         }
       }
-      print(_coursesAssigned);
+      print(_coursesAssigned['2017']);
+      print(_coursesAssigned['2017']?[0]);
+      print(_coursesAssigned['2017']?[0].id);
+      print(_coursesAssigned['2017']?[0].courseName);
       return true;
     }
   }
 
-  Future<bool> uploadData(String fileData, _mid, _section) async {
+  Future<bool> uploadData(
+    String fileData,
+    String selectedMid,
+    String section,
+  ) async {
+    // debug
     final fetchId = await this
         ._supabaseClient
         .from('course_mid_identifier')
         .select('id')
-        .match({'course_id': _currentCourse?.id, 'mid': _mid}).execute();
+        .match({'course_id': _currentCourse?.id, 'mid': selectedMid}).execute();
     if (fetchId.error != null) {
       print('Error:');
       print(fetchId.error?.message);
@@ -442,7 +454,10 @@ class COPlatform extends Model {
     var studentUploadData = [];
     var midId = fetchId.data[0]["id"];
     List lines = fileData.split("\n");
+
     lines.removeAt(0);
+    lines.remove('');
+
     for (var student in lines) {
       List studentDet = student.split(",");
       List<int> marks = [];
@@ -452,10 +467,11 @@ class COPlatform extends Model {
       studentUploadData.add({
         "roll_number": studentDet[0],
         "marks": marks,
-        "section": _section,
+        "section": section,
         "id": midId,
       });
     }
+
     final pushMarks = await this
         ._supabaseClient
         .from('marks')

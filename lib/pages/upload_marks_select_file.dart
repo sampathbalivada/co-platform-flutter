@@ -25,8 +25,11 @@ class _UploadMarksSelectFileState extends State<UploadMarksSelectFile> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Text('Mid'),
+                Text(
+                  'Mid',
+                ),
                 DropdownButton<String>(
                   value: _mid,
                   //elevation: 5,
@@ -48,6 +51,7 @@ class _UploadMarksSelectFileState extends State<UploadMarksSelectFile> {
               ],
             ),
             Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text('Section'),
                 DropdownButton<String>(
