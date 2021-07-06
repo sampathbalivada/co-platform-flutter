@@ -1,13 +1,18 @@
-import 'dart:io';
-
-import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 
-class UploadMarks extends StatelessWidget {
+class UploadMarks extends StatefulWidget {
   final model;
 
   UploadMarks({@required this.model});
+
+  @override
+  _UploadMarksState createState() => _UploadMarksState();
+}
+
+class _UploadMarksState extends State<UploadMarks> {
   var path = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,16 +24,15 @@ class UploadMarks extends StatelessWidget {
           OutlinedButton(
             onPressed: () async {
               FilePickerResult? result = await FilePicker.platform.pickFiles(
+                allowMultiple: false,
                 withData: true,
               );
-              if (result != null) {
-                PlatformFile file = result.files.single;
-                print(file.name);
-                print(file.bytes);
-                print(file.path);
-              } else {
-                print("error");
-              }
+
+              var fileBytes = result?.files.single.bytes;
+
+              Iterable<int>? fileIntList = fileBytes?.toList();
+
+              print(String.fromCharCodes(fileIntList!));
             },
             child: Text("Pick a File"),
           ),
