@@ -427,4 +427,46 @@ class COPlatform extends Model {
       return true;
     }
   }
+
+  Future<bool> uploadData(String fileData, _mid, _section) async {
+    final fetchId = await this
+        ._supabaseClient
+        .from('course_mid_identifier')
+        .select('id')
+        .match({'course_id': _currentCourse?.id, 'mid': _mid}).execute();
+    if (fetchId.error != null) {
+      print('Error:');
+      print(fetchId.error?.message);
+      return false;
+    }
+    var studentUploadData = [];
+    var midId = fetchId.data[0]["id"];
+    List lines = fileData.split("\n");
+    lines.removeAt(0);
+    for (var student in lines) {
+      List studentDet = student.split(",");
+      List<int> marks = [];
+      for (var i = 1; i < studentDet.length; i++) {
+        marks.add(int.parse(studentDet[i]));
+      }
+      studentUploadData.add({
+        "roll_number": studentDet[0],
+        "marks": marks,
+        "section": _section,
+        "id": midId,
+      });
+    }
+    final pushMarks = await this
+        ._supabaseClient
+        .from('marks')
+        .upsert(studentUploadData)
+        .execute();
+
+    if (pushMarks.error != null) {
+      print('Error:');
+      print(pushMarks.error?.message);
+      return false;
+    }
+    return true;
+  }
 }
