@@ -24,6 +24,7 @@ class _COQuestionMappingState extends State<COQuestionMapping> {
   TextEditingController _numberOfQuestionsController = TextEditingController();
 
   List<TextEditingController> _questionController = [];
+  // ignore: non_constant_identifier_names
   List<String> _COController = [];
 
   int _numberOfQuestions = 0;
@@ -154,7 +155,19 @@ class _COQuestionMappingState extends State<COQuestionMapping> {
                     width: MediaQuery.of(context).size.width * 0.15,
                     padding: EdgeInsets.all(8),
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        List<int> _coControl = [];
+                        List<int> _marksControl = [];
+                        for (int i = 0; i < _numberOfQuestions; i++) {
+                          _marksControl
+                              .add(int.parse(_questionController[i].text));
+                          _coControl.add(int.parse(_COController[i]));
+                        }
+                        widget.model.function(
+                            _numberOfQuestions, _coControl, _marksControl);
+
+                        Navigator.pushNamed(context, "/update_co_threshold");
+                      },
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Text(
