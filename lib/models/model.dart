@@ -21,6 +21,19 @@ class Course {
   );
 }
 
+class Question {
+  final int number;
+  final int maxMarks;
+  // ignore: non_constant_identifier_names
+  final int COMapped;
+
+  Question(
+    this.number,
+    this.maxMarks,
+    this.COMapped,
+  );
+}
+
 class COPlatform extends Model {
   final _supabaseClient = sb.SupabaseClient(
     'https://wbuhlcfdloobzennktsc.supabase.co',
@@ -42,13 +55,26 @@ class COPlatform extends Model {
 
   Course? _currentCourse;
 
-  // Getters
+  List<Question> _questions = [];
+
+  // =============
+  // ===Getters===
+  // =============
   Map<String, List> get tasks => _tasks;
   sb.SupabaseClient get supabaseClient => _supabaseClient;
   String? get emailId => _supabaseClient.auth.user()?.email;
   List<dynamic> get roles => _roles;
   Map<String, List<Course>> get coursesAssigned => _coursesAssigned;
   Course? get currentCourse => _currentCourse;
+  List<Question> get questions => _questions;
+
+  // =============
+  // ===Setters===
+  // =============
+
+  void setCurrentCourse(Course currentCourse) {
+    this._currentCourse = currentCourse;
+  }
 
   // =============
   // === AUTH ====
@@ -245,10 +271,6 @@ class COPlatform extends Model {
     }
   }
 
-  void setCurrentCourse(Course currentCourse) {
-    this._currentCourse = currentCourse;
-  }
-
   Future<bool> updateCOThreshold(List<int> thresholdValues, int mid) async {
     print('Model');
 
@@ -270,6 +292,24 @@ class COPlatform extends Model {
       return true;
     }
   }
+
+  void storeCOMapping(
+    int numberOfQuestions,
+    List<int> COMapping,
+    List<int> maxMarks,
+  ) {
+    List<Question> questions = [];
+
+    for (var i = 0; i < numberOfQuestions; i++) {
+      questions.add(Question(i, maxMarks[i], COMapping[i]));
+    }
+
+    _questions = questions;
+  }
+
+  // =================
+  // ==== Faculty ====
+  // =================
 
   Future<bool> getAssignedCoursesForFaculty() async {
     final result = await this
