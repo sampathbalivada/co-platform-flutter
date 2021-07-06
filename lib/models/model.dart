@@ -297,7 +297,6 @@ class COPlatform extends Model {
     int courseMidIdentifierID;
 
     // Push values to course_mid_dentifier
-
     final addNewMidForCourse =
         await this._supabaseClient.from('course_mid_identifier').upsert(
       {
@@ -316,7 +315,6 @@ class COPlatform extends Model {
       courseMidIdentifierID = addNewMidForCourse.data[0]['id'];
     }
 
-    print('CO Mapping Start');
     // Push values to co_mapping
     var questionCOMapping = [];
 
@@ -343,7 +341,6 @@ class COPlatform extends Model {
       print(pushValesToCOMapping.data);
     }
 
-    print('CO Threshold Start');
     // Push values to co_threshold
     var COThresholdMapping = [];
 
