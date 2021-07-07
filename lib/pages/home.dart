@@ -71,6 +71,9 @@ class _HomePageState extends State<HomePage> {
                                         "Calculate Statistics") {
                                       result = await widget.model
                                           .getAssignedCoursesForHOD();
+                                    } else if (taskName == "Check Statistics") {
+                                      result = await widget.model
+                                          .getAvailableBranchCodes();
                                     }
 
                                     if (result) {
