@@ -67,6 +67,8 @@ class COPlatform extends Model {
 
   List<Question> _questions = [];
 
+  String _midSelected = '1';
+
   // =============
   // ===Getters===
   // =============
@@ -81,6 +83,7 @@ class COPlatform extends Model {
   int get mid => _mid;
   List<int> get branchCodes => _branchCodes;
   Map<String, List<double>> get statistics => _statistics;
+  String get midSelected => _midSelected;
 
   // =============
   // ===Setters===
@@ -204,6 +207,52 @@ class COPlatform extends Model {
       }
       return true;
     }
+  }
+
+  Future<bool> getDataForStatistics(String selectedMid) async {
+    _midSelected = selectedMid;
+
+    final fetchId = await this
+        ._supabaseClient
+        .from('course_mid_identifier')
+        .select('id')
+        .match({'course_id': _currentCourse?.id, 'mid': selectedMid}).execute();
+    _statistics = {"total": [], "A": [], "B": [], "C": [], "D": []};
+    if (fetchId.error != null) {
+      print('Error:' + fetchId.error!.message);
+      return false;
+    }
+
+    var midId = fetchId.data[0]['id'];
+    final stats = await this._supabaseClient.rpc(
+      "check_statistics",
+      params: {
+        'id': midId.toString(),
+      },
+    ).execute();
+    if (stats.error != null) {
+      print("Error: " + stats.error!.message);
+      return false;
+    }
+    var fetchData = stats.data;
+    var counts = fetchData["count"];
+
+    List<String> secs = ["A", "B", "C", "D"];
+    for (var i in fetchData["attainment_count"]["total"]) {
+      _statistics["total"]!.add((i / counts["total"]) * 100);
+    }
+    for (var i in secs) {
+      if (counts[i] == 0) {
+        for (var j in fetchData["attainment_count"][i]) {
+          _statistics[i]!.add(0);
+        }
+        continue;
+      }
+      for (var j in fetchData["attainment_count"][i])
+        _statistics[i]!.add(j / counts[i] * 100);
+    }
+    print(_statistics);
+    return true;
   }
 
   // =============
@@ -619,50 +668,6 @@ class COPlatform extends Model {
       print('Error:' + pushMarks.error!.message);
       return false;
     }
-    return true;
-  }
-
-  Future<bool> getDataForStatistics(String selectedMid) async {
-    final fetchId = await this
-        ._supabaseClient
-        .from('course_mid_identifier')
-        .select('id')
-        .match({'course_id': _currentCourse?.id, 'mid': selectedMid}).execute();
-    _statistics = {"total": [], "A": [], "B": [], "C": [], "D": []};
-    if (fetchId.error != null) {
-      print('Error:' + fetchId.error!.message);
-      return false;
-    }
-
-    var midId = fetchId.data[0]['id'];
-    final stats = await this._supabaseClient.rpc(
-      "check_statistics",
-      params: {
-        'id': midId.toString(),
-      },
-    ).execute();
-    if (stats.error != null) {
-      print("Error: " + stats.error!.message);
-      return false;
-    }
-    var fetchData = stats.data;
-    var counts = fetchData["count"];
-
-    List<String> secs = ["A", "B", "C", "D"];
-    for (var i in fetchData["attainment_count"]["total"]) {
-      _statistics["total"]!.add((i / counts["total"]) * 100);
-    }
-    for (var i in secs) {
-      if (counts[i] == 0) {
-        for (var j in fetchData["attainment_count"][i]) {
-          _statistics[i]!.add(0);
-        }
-        continue;
-      }
-      for (var j in fetchData["attainment_count"][i])
-        _statistics[i]!.add(j / counts[i] * 100);
-    }
-    print(_statistics);
     return true;
   }
 }

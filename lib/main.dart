@@ -7,6 +7,7 @@ import 'package:co_attainment_platform/pages/co_question_mapping.dart';
 import 'package:co_attainment_platform/pages/select_course_for_statistics.dart';
 import 'package:co_attainment_platform/pages/select_mid_and_calculate_stats.dart';
 import 'package:co_attainment_platform/pages/select_mid_and_check_statistics.dart';
+import 'package:co_attainment_platform/pages/show_statistics.dart';
 import 'package:co_attainment_platform/pages/upload_marks.dart';
 import 'package:co_attainment_platform/pages/upload_marks_select_file.dart';
 import 'package:flutter/material.dart';
@@ -53,6 +54,7 @@ class MainApp extends StatelessWidget {
             SelectCourseForStatistics(model: _model),
         "/select_mid_and_check_statistics": (context) =>
             SelectMidAndCheckStatistics(model: _model),
+        "/show_statistics": (context) => ShowStatistics(model: _model),
       },
       debugShowCheckedModeBanner: false,
       initialRoute: '/',

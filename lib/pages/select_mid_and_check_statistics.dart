@@ -56,10 +56,10 @@ class _SelectMidAndCheckStatisticsState
               padding: EdgeInsets.all(8),
               child: ElevatedButton(
                 onPressed: () async {
-                  final result = await widget.model.calculateStistics(_mid);
+                  final result = await widget.model.getDataForStatistics(_mid);
 
                   if (result) {
-                    print('Yes');
+                    Navigator.pushNamed(context, '/show_statistics');
                   } else {
                     print('No');
                   }
