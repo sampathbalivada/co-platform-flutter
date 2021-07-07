@@ -40,7 +40,7 @@ class _CalculateStatisticsState extends State<CalculateStatistics> {
                     widget.model.setCurrentCourse(course);
                     Navigator.pushNamed(
                       context,
-                      '/upload_marks_select_file',
+                      '/select_mid_and_calculate_stats',
                     );
                   },
                   child: Padding(
@@ -91,6 +91,19 @@ class _CalculateStatisticsState extends State<CalculateStatistics> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home > Upload Marks'),
+      ),
+      body: Center(
+        child: Container(
+          width: MediaQuery.of(context).size.width * 0.25,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: generateExpansionTiles(),
+          ),
+        ),
+      ),
+    );
   }
 }

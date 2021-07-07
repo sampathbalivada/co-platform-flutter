@@ -67,6 +67,10 @@ class _HomePageState extends State<HomePage> {
                                     } else if (taskName == "Upload Marks") {
                                       result = await widget.model
                                           .getAssignedCoursesForFaculty();
+                                    } else if (taskName ==
+                                        "Calculate Statistics") {
+                                      result = await widget.model
+                                          .getAssignedCoursesForHOD();
                                     }
 
                                     if (result) {

@@ -215,6 +215,85 @@ class COPlatform extends Model {
     }
   }
 
+  Future<bool> getAssignedCoursesForHOD() async {
+    final result = await this
+        ._supabaseClient
+        .from('courses')
+        .select('course_code, name, batch, course_id, branch_code')
+        .match({'branch_code': _branchCode}).execute();
+
+    if (result.error != null) {
+      print('Error: ' + result.error!.message);
+      return false;
+    } else {
+      // return success
+
+      var data = result.data;
+
+      _coursesAssigned = {};
+
+      for (var i = 0; i < data.length; i++) {
+        if (_coursesAssigned.containsKey(data[i]['batch'])) {
+          _coursesAssigned[data[i]['batch']]?.add(
+            Course(
+              data[i]['course_code'],
+              data[i]['name'],
+              data[i]['batch'],
+              int.parse(data[i]['course_code'][6]),
+              int.parse(data[i]['course_code'][7]),
+              data[i]['course_id'],
+              data[i]['branch_code'],
+            ),
+          );
+        } else {
+          _coursesAssigned[data[i]['batch']] = [
+            Course(
+              data[i]['course_code'],
+              data[i]['name'],
+              data[i]['batch'],
+              int.parse(data[i]['course_code'][6]),
+              int.parse(data[i]['course_code'][7]),
+              data[i]['course_id'],
+              data[i]['branch_code'],
+            ),
+          ];
+        }
+      }
+      return true;
+    }
+  }
+
+  Future<bool> calculateStistics(String selectedMid) async {
+    print('Get ID');
+    print(_currentCourse!.id);
+
+    final fetchId = await this
+        ._supabaseClient
+        .from('course_mid_identifier')
+        .select('id')
+        .match({'course_id': _currentCourse?.id, 'mid': selectedMid}).execute();
+    if (fetchId.error != null) {
+      print('Error:' + fetchId.error!.message);
+      return false;
+    }
+
+    print('Got ID');
+
+    var midId = fetchId.data[0]["id"];
+
+    final status = await this._supabaseClient.rpc(
+      "calculate_attainment",
+      params: {
+        'id': midId.toString(),
+      },
+    ).execute();
+    if (status.error != null) {
+      print("Error: " + status.error!.message);
+      return false;
+    }
+    return true;
+  }
+
   // =====================
   // ==== Coordinator ====
   // =====================
@@ -417,58 +496,6 @@ class COPlatform extends Model {
     }
   }
 
-  // =================
-  // ====== HOD ======
-  // =================
-
-  Future<bool> getAssignedCoursesForHOD() async {
-    final result = await this
-        ._supabaseClient
-        .from('courses')
-        .select('course_code, name, batch, course_id, branch_code')
-        .match({'branch_code': _branchCode}).execute();
-
-    if (result.error != null) {
-      print('Error: ' + result.error!.message);
-      return false;
-    } else {
-      // return success
-
-      var data = result.data;
-
-      _coursesAssigned = {};
-
-      for (var i = 0; i < data.length; i++) {
-        if (_coursesAssigned.containsKey(data[i]['batch'])) {
-          _coursesAssigned[data[i]['batch']]?.add(
-            Course(
-              data[i]['course_code'],
-              data[i]['name'],
-              data[i]['batch'],
-              int.parse(data[i]['course_code'][6]),
-              int.parse(data[i]['course_code'][7]),
-              data[i]['course_id'],
-              data[i]['branch_code'],
-            ),
-          );
-        } else {
-          _coursesAssigned[data[i]['batch']] = [
-            Course(
-              data[i]['course_code'],
-              data[i]['name'],
-              data[i]['batch'],
-              int.parse(data[i]['course_code'][6]),
-              int.parse(data[i]['course_code'][7]),
-              data[i]['course_id'],
-              data[i]['branch_code'],
-            ),
-          ];
-        }
-      }
-      return true;
-    }
-  }
-
   Future<bool> uploadData(
     String fileData,
     String selectedMid,
@@ -513,30 +540,6 @@ class COPlatform extends Model {
 
     if (pushMarks.error != null) {
       print('Error:' + pushMarks.error!.message);
-      return false;
-    }
-    return true;
-  }
-
-  Future<bool> calculateStistics(String selectedMid) async {
-    final fetchId = await this
-        ._supabaseClient
-        .from('course_mid_identifier')
-        .select('id')
-        .match({'course_id': _currentCourse?.id, 'mid': selectedMid}).execute();
-    if (fetchId.error != null) {
-      print('Error:' + fetchId.error!.message);
-      return false;
-    }
-    var midId = fetchId.data[0]["id"];
-    final status = await this._supabaseClient.rpc(
-      "calculate_attainment",
-      params: {
-        'id': midId,
-      },
-    ).execute();
-    if (status.error != null) {
-      print("Error: " + status.error!.message);
       return false;
     }
     return true;
