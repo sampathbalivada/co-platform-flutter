@@ -42,6 +42,8 @@ class COPlatform extends Model {
 
   int _branchCode = 0;
 
+  List<int> _branchCodes = [];
+
   Map<String, List> _tasks = {
     "Faculty": ["Upload Marks"],
     "HOD": ["Calculate Statistics", "Add Course", "Add Faculty to Course"],
@@ -70,6 +72,7 @@ class COPlatform extends Model {
   Course? get currentCourse => _currentCourse;
   List<Question> get questions => _questions;
   int get mid => _mid;
+  List<int> get branchCodes => _branchCodes;
 
   // =============
   // ===Setters===
@@ -77,6 +80,10 @@ class COPlatform extends Model {
 
   void setCurrentCourse(Course currentCourse) {
     this._currentCourse = currentCourse;
+  }
+
+  void setBranchCode(int branchCode) {
+    _branchCode = branchCode;
   }
 
   // =============
@@ -120,6 +127,73 @@ class COPlatform extends Model {
       return false;
     } else {
       // SUCCESS: User and session available!
+      return true;
+    }
+  }
+
+  // ==============
+  // === Common ===
+  // ==============
+
+  Future<bool> getAvailableBranchCodes() async {
+    var branchCodesResponse =
+        await this._supabaseClient.rpc('get_stored_branch_codes').execute();
+
+    if (branchCodesResponse.error != null) {
+      print('Error: ' + branchCodesResponse.error!.message);
+      return false;
+    } else {
+      for (var temp in branchCodesResponse.data) {
+        _branchCodes.add(temp);
+      }
+      return true;
+    }
+  }
+
+  Future<bool> getAllCoursesForBranch() async {
+    final result = await this
+        ._supabaseClient
+        .from('courses')
+        .select('course_code, name, batch, course_id, branch_code')
+        .match({'branch_code': _branchCode}).execute();
+
+    if (result.error != null) {
+      print('Error: ' + result.error!.message);
+      return false;
+    } else {
+      // return success
+
+      var data = result.data;
+
+      _coursesAssigned = {};
+
+      for (var i = 0; i < data.length; i++) {
+        if (_coursesAssigned.containsKey(data[i]['batch'])) {
+          _coursesAssigned[data[i]['batch']]?.add(
+            Course(
+              data[i]['course_code'],
+              data[i]['name'],
+              data[i]['batch'],
+              int.parse(data[i]['course_code'][6]),
+              int.parse(data[i]['course_code'][7]),
+              data[i]['course_id'],
+              data[i]['branch_code'],
+            ),
+          );
+        } else {
+          _coursesAssigned[data[i]['batch']] = [
+            Course(
+              data[i]['course_code'],
+              data[i]['name'],
+              data[i]['batch'],
+              int.parse(data[i]['course_code'][6]),
+              int.parse(data[i]['course_code'][7]),
+              data[i]['course_id'],
+              data[i]['branch_code'],
+            ),
+          ];
+        }
+      }
       return true;
     }
   }
@@ -264,9 +338,6 @@ class COPlatform extends Model {
   }
 
   Future<bool> calculateStistics(String selectedMid) async {
-    print('Get ID');
-    print(_currentCourse!.id);
-
     final fetchId = await this
         ._supabaseClient
         .from('course_mid_identifier')
@@ -276,8 +347,6 @@ class COPlatform extends Model {
       print('Error:' + fetchId.error!.message);
       return false;
     }
-
-    print('Got ID');
 
     var midId = fetchId.data[0]["id"];
 

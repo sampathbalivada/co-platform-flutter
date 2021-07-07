@@ -7,7 +7,8 @@ class SelectCourseForStatistics extends StatefulWidget {
   SelectCourseForStatistics({@required this.model});
 
   @override
-  _SelectCourseForStatisticsState createState() => _SelectCourseForStatisticsState();
+  _SelectCourseForStatisticsState createState() =>
+      _SelectCourseForStatisticsState();
 }
 
 class _SelectCourseForStatisticsState extends State<SelectCourseForStatistics> {
@@ -93,7 +94,7 @@ class _SelectCourseForStatisticsState extends State<SelectCourseForStatistics> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home > Upload Marks'),
+        title: Text('Select Course For Check Statistics'),
       ),
       body: Center(
         child: Container(
