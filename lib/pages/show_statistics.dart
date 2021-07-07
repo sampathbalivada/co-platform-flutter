@@ -48,21 +48,40 @@ class ShowStatistics extends StatelessWidget {
 
       rowChildren.add(buildCustomCell('CO ${i + 1}'));
 
-      rowChildren.add(buildCustomCell(data['A']![i].toString()));
-      rowChildren.add(buildCustomCell((100 - data['A']![i]).toString()));
-      rowChildren.add(buildCustomCell(data['B']![i].toString()));
-      rowChildren.add(buildCustomCell((100 - data['B']![i]).toString()));
-      rowChildren.add(buildCustomCell(data['C']![i].toString()));
-      rowChildren.add(buildCustomCell((100 - data['C']![i]).toString()));
-      rowChildren.add(buildCustomCell(data['D']![i].toString()));
-      rowChildren.add(buildCustomCell((100 - data['D']![i]).toString()));
-      rowChildren.add(buildCustomCell(data['total']![i].toString()));
-      rowChildren.add(buildCustomCell((100 - data['total']![i]).toString()));
+      var sections = ['A', 'B', 'C', 'D', 'total'];
+
+      for (var section in sections) {
+        data[section]![len - 1] == 0
+            ? addDataToRow(rowChildren)
+            : addDataToRow(
+                rowChildren,
+                A: data[section]![i].toString(),
+                NA: (100 - data[section]![i]).toString(),
+              );
+      }
+
+      // rowChildren.add(buildCustomCell(data['A']![i].toString()));
+      // rowChildren.add(buildCustomCell((100 - data['A']![i]).toString()));
+      // rowChildren.add(buildCustomCell(data['B']![i].toString()));
+      // rowChildren.add(buildCustomCell((100 - data['B']![i]).toString()));
+      // rowChildren.add(buildCustomCell(data['C']![i].toString()));
+      // rowChildren.add(buildCustomCell((100 - data['C']![i]).toString()));
+      // rowChildren.add(buildCustomCell(data['D']![i].toString()));
+      // rowChildren.add(buildCustomCell((100 - data['D']![i]).toString()));
+      // rowChildren.add(buildCustomCell(data['total']![i].toString()));
+      // rowChildren.add(buildCustomCell((100 - data['total']![i]).toString()));
 
       rows.add(TableRow(
         children: rowChildren,
       ));
     }
+  }
+
+  // ignore: non_constant_identifier_names
+  void addDataToRow(List<TableCell> children,
+      {String A = '-', String NA = '-'}) {
+    children.add(buildCustomCell(A));
+    children.add(buildCustomCell(NA));
   }
 
   @override
