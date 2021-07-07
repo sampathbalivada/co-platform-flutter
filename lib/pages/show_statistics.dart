@@ -42,11 +42,12 @@ class ShowStatistics extends StatelessWidget {
     ];
 
     data = model.statistics;
-
-    for (int i = 0; i < data['total']!.length; ++i) {
+    var len = data['total']!.length;
+    for (int i = 0; i < len - 1; ++i) {
       List<TableCell> rowChildren = [];
 
       rowChildren.add(buildCustomCell('CO ${i + 1}'));
+
       rowChildren.add(buildCustomCell(data['A']![i].toString()));
       rowChildren.add(buildCustomCell((100 - data['A']![i]).toString()));
       rowChildren.add(buildCustomCell(data['B']![i].toString()));

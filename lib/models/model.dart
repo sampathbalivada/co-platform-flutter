@@ -218,6 +218,7 @@ class COPlatform extends Model {
         .select('id')
         .match({'course_id': _currentCourse?.id, 'mid': selectedMid}).execute();
     _statistics = {"total": [], "A": [], "B": [], "C": [], "D": []};
+
     if (fetchId.error != null) {
       print('Error:' + fetchId.error!.message);
       return false;
@@ -250,6 +251,10 @@ class COPlatform extends Model {
       }
       for (var j in fetchData["attainment_count"][i])
         _statistics[i]!.add(j / counts[i] * 100);
+    }
+    _statistics["total"]!.add(counts["total"]);
+    for (var i in secs) {
+      _statistics[i]!.add(counts[i]);
     }
     print(_statistics);
     return true;
