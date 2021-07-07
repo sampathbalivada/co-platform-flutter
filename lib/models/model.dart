@@ -90,7 +90,7 @@ class COPlatform extends Model {
         .signIn(email: emailId, password: password);
 
     if (response.error != null) {
-      print(response.error);
+      print('Error: ' + response.error!.message);
       return false;
       // ERROR: Prompt the user to try again!
     } else {
@@ -115,7 +115,7 @@ class COPlatform extends Model {
     final response = await this.supabaseClient.auth.signUp(emailId, password);
 
     if (response.error != null) {
-      print(response.error);
+      print('Error: ' + response.error!.message);
       // ERROR: Prompt the user to try again!
       return false;
     } else {
@@ -146,7 +146,7 @@ class COPlatform extends Model {
     ).execute();
 
     if (result.error != null) {
-      print(result.error?.message);
+      print('Error: ' + result.error!.message);
       return false;
     } else {
       // return success
@@ -178,8 +178,6 @@ class COPlatform extends Model {
       facultyEmailIDsModified = facultyEmails.data[0]['faculty_emails'];
     }
 
-    print(facultyEmailIDsModified);
-
     if (facultyEmailIDsModified.contains(facultyEmail)) {
       return false;
     }
@@ -196,7 +194,7 @@ class COPlatform extends Model {
     ).execute();
 
     if (result.error != null) {
-      print(result.error?.message);
+      print('Error: ' + result.error!.message);
       return false;
     } else {
       // return success
@@ -209,7 +207,7 @@ class COPlatform extends Model {
       ).execute();
 
       if (result.error != null) {
-        print(result.error?.message);
+        print('Error: ' + result.error!.message);
         return false;
       } else {
         return true;
@@ -233,14 +231,12 @@ class COPlatform extends Model {
     ).execute();
 
     if (result.error != null) {
-      print(result.error?.message);
+      print('Error: ' + result.error!.message);
       return false;
     } else {
       // return success
 
       var data = result.data;
-
-      print(data);
 
       _coursesAssigned = {};
 
@@ -271,7 +267,6 @@ class COPlatform extends Model {
           ];
         }
       }
-      print(_coursesAssigned);
       return true;
     }
   }
@@ -292,8 +287,6 @@ class COPlatform extends Model {
     }
 
     _questions = questions;
-
-    print(questions);
   }
 
   Future<bool> updateCOMappingAndThreshold(List<int> thresholdValues) async {
@@ -309,11 +302,9 @@ class COPlatform extends Model {
     ).execute();
 
     if (addNewMidForCourse.error != null) {
-      print('Error: Add Mid For Course');
-      print(addNewMidForCourse.error?.message);
+      print('Error: Add Mid For Course' + addNewMidForCourse.error!.message);
       return false;
     } else {
-      print(addNewMidForCourse.data);
       // Get ID from course_mid_identifier
       courseMidIdentifierID = addNewMidForCourse.data[0]['id'];
     }
@@ -337,11 +328,8 @@ class COPlatform extends Model {
         .execute();
 
     if (pushValesToCOMapping.error != null) {
-      print('Error: Push Values to CO Mapping');
-      print(pushValesToCOMapping.error?.message);
+      print('Error: Push Values to CO Mapping' + pushValesToCOMapping.error!.message);
       return false;
-    } else {
-      print(pushValesToCOMapping.data);
     }
 
     // Push values to co_threshold
@@ -363,8 +351,7 @@ class COPlatform extends Model {
         .execute();
 
     if (result.error != null) {
-      print('Error: Push Values to CO Threshold');
-      print(result.error?.message);
+      print('Error: Push Values to CO Threshold' + result.error!.message);
       return false;
     } else {
       // return success
@@ -389,14 +376,12 @@ class COPlatform extends Model {
     ).execute();
 
     if (result.error != null) {
-      print(result.error?.message);
+      print('Error: ' + result.error!.message);
       return false;
     } else {
       // return success
 
       var data = result.data;
-
-      print(data);
 
       _coursesAssigned = {};
 
@@ -427,10 +412,6 @@ class COPlatform extends Model {
           ];
         }
       }
-      print(_coursesAssigned['2017']);
-      print(_coursesAssigned['2017']?[0]);
-      print(_coursesAssigned['2017']?[0].id);
-      print(_coursesAssigned['2017']?[0].courseName);
       return true;
     }
   }
@@ -447,8 +428,7 @@ class COPlatform extends Model {
         .select('id')
         .match({'course_id': _currentCourse?.id, 'mid': selectedMid}).execute();
     if (fetchId.error != null) {
-      print('Error:');
-      print(fetchId.error?.message);
+      print('Error:' + fetchId.error!.message);
       return false;
     }
     var studentUploadData = [];
@@ -479,8 +459,7 @@ class COPlatform extends Model {
         .execute();
 
     if (pushMarks.error != null) {
-      print('Error:');
-      print(pushMarks.error?.message);
+      print('Error:' + pushMarks.error!.message);
       return false;
     }
     return true;
