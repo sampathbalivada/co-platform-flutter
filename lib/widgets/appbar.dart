@@ -3,11 +3,21 @@ import 'package:flutter/material.dart';
 showAlertDialog(BuildContext context, var model) {
   // set up the button
   Widget okButton = TextButton(
-    child: Text("Log Out"),
+    style: TextButton.styleFrom(
+      primary: Colors.red,
+    ),
+    child: Text("Logout"),
     onPressed: () {
       model.logout();
       Navigator.popUntil(context, ModalRoute.withName('/home'));
       Navigator.popAndPushNamed(context, '/');
+    },
+  );
+
+  Widget cancelButton = TextButton(
+    child: Text("Cancel"),
+    onPressed: () {
+      Navigator.pop(context);
     },
   );
 
@@ -17,6 +27,7 @@ showAlertDialog(BuildContext context, var model) {
     content: Text("Are you sure you want to Logout of the application?"),
     actions: [
       okButton,
+      cancelButton,
     ],
   );
 

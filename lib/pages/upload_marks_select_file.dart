@@ -15,6 +15,33 @@ class _UploadMarksSelectFileState extends State<UploadMarksSelectFile> {
   String _mid = '1';
   String _section = 'A';
 
+  showAlertDialog(BuildContext context, String title, String content) {
+    // Create button
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.popUntil(context, ModalRoute.withName('/home'));
+      },
+    );
+
+    // Create AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(title),
+      content: Text(content),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,15 +167,30 @@ class _UploadMarksSelectFileState extends State<UploadMarksSelectFile> {
                         allowMultiple: false,
                         withData: true,
                       );
+
                       var fileBytes = result?.files.single.bytes;
 
                       Iterable<int>? fileIntList = fileBytes?.toList();
 
-                      widget.model.uploadData(
+                      bool status = await widget.model.uploadData(
                         String.fromCharCodes(fileIntList!),
                         _mid,
                         _section,
                       );
+
+                      if (status) {
+                        showAlertDialog(
+                          context,
+                          'Data Uploaded',
+                          'The data for the given mid and section has been successfully updated.',
+                        );
+                      } else {
+                        showAlertDialog(
+                          context,
+                          'Upload Error',
+                          'Error encountered whil uploading data. Contact Administrator for help.',
+                        );
+                      }
                     },
                     icon: Icon(Icons.upload_file),
                     label: Padding(
