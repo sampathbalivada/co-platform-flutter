@@ -60,17 +60,6 @@ class ShowStatistics extends StatelessWidget {
               );
       }
 
-      // rowChildren.add(buildCustomCell(data['A']![i].toString()));
-      // rowChildren.add(buildCustomCell((100 - data['A']![i]).toString()));
-      // rowChildren.add(buildCustomCell(data['B']![i].toString()));
-      // rowChildren.add(buildCustomCell((100 - data['B']![i]).toString()));
-      // rowChildren.add(buildCustomCell(data['C']![i].toString()));
-      // rowChildren.add(buildCustomCell((100 - data['C']![i]).toString()));
-      // rowChildren.add(buildCustomCell(data['D']![i].toString()));
-      // rowChildren.add(buildCustomCell((100 - data['D']![i]).toString()));
-      // rowChildren.add(buildCustomCell(data['total']![i].toString()));
-      // rowChildren.add(buildCustomCell((100 - data['total']![i]).toString()));
-
       rows.add(TableRow(
         children: rowChildren,
       ));

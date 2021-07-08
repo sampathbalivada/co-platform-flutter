@@ -1,3 +1,4 @@
+import 'package:co_attainment_platform/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,9 +15,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Vignan\'s Institute of Information Technology'),
-      ),
+      appBar:
+          buildCustomAppBar('Vignan\'s Institute of Information Technology'),
       body: Center(
         child: _isloading
             ? CircularProgressIndicator()
@@ -28,84 +28,94 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Center(
                       child: Text(
-                        "Perform a Task",
+                        "Available Tasks",
                         style: TextStyle(
-                          fontSize: 22,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
                     SizedBox(height: 10),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ExpansionTile(
-                          title: Text(
-                            widget.model.roles[index],
-                            style: TextStyle(
-                              fontSize: 20,
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Color(0xFF9A9A9A)),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemBuilder: (BuildContext context, int index) {
+                          return ExpansionTile(
+                            title: Text(
+                              widget.model.roles[index],
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
                             ),
-                          ),
-                          children: [
-                            ListView.builder(
-                              shrinkWrap: true,
-                              itemBuilder:
-                                  (BuildContext context, int taskIndex) {
-                                var taskName = widget.model
-                                        .tasks["${widget.model.roles[index]}"]
-                                    [taskIndex];
+                            children: [
+                              ListView.builder(
+                                shrinkWrap: true,
+                                itemBuilder:
+                                    (BuildContext context, int taskIndex) {
+                                  var taskName = widget.model
+                                          .tasks["${widget.model.roles[index]}"]
+                                      [taskIndex];
 
-                                return OutlinedButton(
-                                  style: ButtonStyle(
-                                    alignment: Alignment.centerLeft,
-                                  ),
-                                  onPressed: () async {
-                                    bool result = true;
+                                  return OutlinedButton(
+                                    style: ButtonStyle(
+                                      alignment: Alignment.centerLeft,
+                                    ),
+                                    onPressed: () async {
+                                      bool result = true;
 
-                                    if (taskName == "Assign CO Threshold") {
-                                      result = await widget.model
-                                          .getAssignedCoursesForCoordinator();
-                                    } else if (taskName == "Upload Marks") {
-                                      result = await widget.model
-                                          .getAssignedCoursesForFaculty();
-                                    } else if (taskName ==
-                                        "Calculate Statistics") {
-                                      result = await widget.model
-                                          .getAssignedCoursesForHOD();
-                                    } else if (taskName == "Check Statistics") {
-                                      result = await widget.model
-                                          .getAvailableBranchCodes();
-                                    }
+                                      if (taskName == "Assign CO Threshold") {
+                                        result = await widget.model
+                                            .getAssignedCoursesForCoordinator();
+                                      } else if (taskName == "Upload Marks") {
+                                        result = await widget.model
+                                            .getAssignedCoursesForFaculty();
+                                      } else if (taskName ==
+                                          "Calculate Statistics") {
+                                        result = await widget.model
+                                            .getAssignedCoursesForHOD();
+                                      } else if (taskName ==
+                                          "Check Statistics") {
+                                        result = await widget.model
+                                            .getAvailableBranchCodes();
+                                      }
 
-                                    if (result) {
-                                      Navigator.pushNamed(
-                                        context,
-                                        "/" +
-                                            taskName
-                                                .replaceAll(' ', '_')
-                                                .toLowerCase(),
-                                      );
-                                    } else {
-                                      print('error');
-                                    }
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: Text(
-                                      taskName,
-                                      style: TextStyle(
-                                        fontSize: 18,
+                                      if (result) {
+                                        Navigator.pushNamed(
+                                          context,
+                                          "/" +
+                                              taskName
+                                                  .replaceAll(' ', '_')
+                                                  .toLowerCase(),
+                                        );
+                                      } else {
+                                        print('error');
+                                      }
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Text(
+                                        taskName,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              },
-                              itemCount: widget.model
-                                  .tasks["${widget.model.roles[index]}"].length,
-                            )
-                          ],
-                        );
-                      },
-                      itemCount: widget.model.roles.length,
+                                  );
+                                },
+                                itemCount: widget
+                                    .model
+                                    .tasks["${widget.model.roles[index]}"]
+                                    .length,
+                              )
+                            ],
+                          );
+                        },
+                        itemCount: widget.model.roles.length,
+                      ),
                     )
                   ],
                 ),

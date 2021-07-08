@@ -1,3 +1,4 @@
+import 'package:co_attainment_platform/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -47,9 +48,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Vignan\'s Institute of Information Technology'),
-      ),
+      appBar:
+          buildCustomAppBar('Vignan\'s Institute of Information Technology'),
       body: Center(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -64,9 +64,10 @@ class _LoginPageState extends State<LoginPage> {
                       'Sign In',
                       style: TextStyle(
                         fontSize: 24,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                    SizedBox(height: 12),
+                    SizedBox(height: 24),
                     buildCustomTextField(
                       signInEmailId,
                       TextInputType.emailAddress,
@@ -101,6 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                           //   signInPassword.text,
                           // );
 
+                          // debug
                           bool r = await widget.model.signIn(
                             'sri@sampath.dev',
                             'google',
@@ -122,6 +124,13 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
+            Padding(
+              padding: EdgeInsets.only(top: 200, bottom: 200),
+              child: VerticalDivider(
+                thickness: 1,
+                color: Color(0xFF9A9A9A),
+              ),
+            ),
             Expanded(
               child: Container(
                 padding: const EdgeInsets.only(left: 120, right: 240),
@@ -132,9 +141,10 @@ class _LoginPageState extends State<LoginPage> {
                       'Register',
                       style: TextStyle(
                         fontSize: 24,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                    SizedBox(height: 12),
+                    SizedBox(height: 24),
                     buildCustomTextField(
                       signUpEmailId,
                       TextInputType.emailAddress,
@@ -202,15 +212,18 @@ class _LoginPageState extends State<LoginPage> {
       {bool obscureText = false}) {
     return Padding(
       padding: const EdgeInsets.only(left: 75, right: 75, top: 8, bottom: 8),
-      child: TextField(
-        controller: controller,
-        keyboardType: inputType,
-        obscureText: obscureText,
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.only(left: 8, right: 8),
-          hintText: hintText,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+      child: Container(
+        height: 42,
+        child: TextField(
+          controller: controller,
+          keyboardType: inputType,
+          obscureText: obscureText,
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.only(left: 8, right: 8),
+            hintText: hintText,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
           ),
         ),
       ),
