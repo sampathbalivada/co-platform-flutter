@@ -1,3 +1,4 @@
+import 'package:co_attainment_platform/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 
 class ShowStatistics extends StatelessWidget {
@@ -12,21 +13,21 @@ class ShowStatistics extends StatelessWidget {
       TableRow(
         children: [
           buildCustomCell(''),
-          buildCustomCell('SEC - A'),
+          buildCustomCell('SEC - A', isHead: true),
           buildCustomCell(''),
-          buildCustomCell('SEC - B'),
+          buildCustomCell('SEC - B', isHead: true),
           buildCustomCell(''),
-          buildCustomCell('SEC - C'),
+          buildCustomCell('SEC - C', isHead: true),
           buildCustomCell(''),
-          buildCustomCell('SEC - D'),
+          buildCustomCell('SEC - D', isHead: true),
           buildCustomCell(''),
-          buildCustomCell('Total'),
+          buildCustomCell('Total', isHead: true),
           buildCustomCell(''),
         ],
       ),
       TableRow(
         children: [
-          buildCustomCell('Course Outcomes'),
+          buildCustomCell('Course Outcomes', isHead: true),
           buildCustomCell('A (%)'),
           buildCustomCell('NA (%)'),
           buildCustomCell('A (%)'),
@@ -46,7 +47,7 @@ class ShowStatistics extends StatelessWidget {
     for (int i = 0; i < len - 1; ++i) {
       List<TableCell> rowChildren = [];
 
-      rowChildren.add(buildCustomCell('CO ${i + 1}'));
+      rowChildren.add(buildCustomCell('CO ${i + 1}', isHead: true));
 
       var sections = ['A', 'B', 'C', 'D', 'total'];
 
@@ -76,22 +77,28 @@ class ShowStatistics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Statistics for ' +
-              model.currentCourse.courseName +
-              ' - ' +
-              model.currentCourse.courseCode +
-              ' - Mid ' +
-              model.midSelected,
-        ),
-      ),
+      appBar: buildCustomAppBar('Statistics for ' +
+          model.currentCourse.courseName +
+          ' - ' +
+          model.currentCourse.courseCode +
+          ' - Mid ' +
+          model.midSelected),
+      //  AppBar(
+      //   title: Text(
+      //     'Statistics for ' +
+      //         model.currentCourse.courseName +
+      //         ' - ' +
+      //         model.currentCourse.courseCode +
+      //         ' - Mid ' +
+      //         model.midSelected,
+      //   ),
+      // ),
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width * 0.8,
           child: Table(
             defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-            border: TableBorder.all(),
+            border: TableBorder.all(color: Colors.grey),
             children: rows,
           ),
         ),
@@ -99,7 +106,7 @@ class ShowStatistics extends StatelessWidget {
     );
   }
 
-  TableCell buildCustomCell(String data) {
+  TableCell buildCustomCell(String data, {bool isHead = false}) {
     return TableCell(
       verticalAlignment: TableCellVerticalAlignment.middle,
       child: Padding(
@@ -108,9 +115,9 @@ class ShowStatistics extends StatelessWidget {
           data,
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: isHead ? Colors.blue : Colors.black),
         ),
       ),
     );

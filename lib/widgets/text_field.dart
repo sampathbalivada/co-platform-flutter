@@ -5,18 +5,22 @@ Widget buildCustomTextField(TextEditingController controller,
     {bool obscureText = false, Function(String)? onChanged}) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
-    child: TextField(
-      controller: controller,
-      keyboardType: inputType,
-      obscureText: obscureText,
-      decoration: InputDecoration(
-        labelText: label,
-        hintText: "Enter " + label,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+    child: Container(
+      height: 42,
+      child: TextField(
+        controller: controller,
+        keyboardType: inputType,
+        obscureText: obscureText,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.only(left: 8, right: 8),
+          labelText: label,
+          hintText: "Enter " + label,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
         ),
+        onChanged: onChanged,
       ),
-      onChanged: onChanged,
     ),
   );
 }

@@ -1,3 +1,4 @@
+import 'package:co_attainment_platform/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/text_field.dart';
@@ -34,9 +35,7 @@ class _COQuestionMappingState extends State<COQuestionMapping> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('CO Question Mapping'),
-      ),
+      appBar: buildCustomAppBar('CO Question Mapping'),
       body: Center(
         child: ListView(
           children: [
@@ -54,7 +53,12 @@ class _COQuestionMappingState extends State<COQuestionMapping> {
                       'Number of Questions',
                       'Enter the number of questions', onChanged: (value) {
                     setState(() {
-                      int numberOfQuestions = int.parse(value);
+                      int numberOfQuestions = 0;
+                      if (value == "") {
+                        numberOfQuestions = 0;
+                      } else {
+                        numberOfQuestions = int.parse(value);
+                      }
                       _numberOfQuestions =
                           numberOfQuestions >= 12 ? 12 : numberOfQuestions;
                     });
@@ -65,31 +69,54 @@ class _COQuestionMappingState extends State<COQuestionMapping> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Select Mid Exam:',
+                      'Select Mid Exam',
                       style: TextStyle(fontSize: 18),
                     ),
                     SizedBox(width: 24),
-                    DropdownButton<String>(
-                      value: _mid,
-                      //elevation: 5,
-                      style: TextStyle(color: Colors.black),
+                    Container(
+                      height: 42,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Color(0xFF9A9A9A),
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: _mid,
+                          //elevation: 5,
+                          style: TextStyle(color: Colors.black),
 
-                      items: <String>['1', '2']
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (String? value) {
-                        setState(() {
-                          _mid = value ?? '1';
-                        });
-                      },
+                          items: <String>['1', '2']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 8.0, right: 8.0),
+                                child: Text("Mid " + value),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            setState(() {
+                              _mid = value ?? '1';
+                            });
+                          },
+                        ),
+                      ),
                     ),
                   ],
                 ),
-                SizedBox(height: 24),
+                SizedBox(height: 40),
+                Padding(
+                  padding: const EdgeInsets.only(left: 250.0, right: 175),
+                  child: Divider(
+                    color: Color(0xFF9A9A9A),
+                    thickness: 1,
+                  ),
+                ),
+                SizedBox(height: 16),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -98,7 +125,7 @@ class _COQuestionMappingState extends State<COQuestionMapping> {
                       child: Text(
                         'Question Number',
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 18),
+                        style: TextStyle(fontSize: 22),
                       ),
                     ),
                     SizedBox(width: 12),
@@ -107,7 +134,7 @@ class _COQuestionMappingState extends State<COQuestionMapping> {
                       child: Text(
                         'CO Assigned',
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 18),
+                        style: TextStyle(fontSize: 22),
                       ),
                     ),
                     SizedBox(width: 12),
@@ -116,7 +143,7 @@ class _COQuestionMappingState extends State<COQuestionMapping> {
                       child: Text(
                         'Max Marks for Question',
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 18),
+                        style: TextStyle(fontSize: 22),
                       ),
                     )
                   ],
@@ -135,13 +162,14 @@ class _COQuestionMappingState extends State<COQuestionMapping> {
                             child: Text(
                               'Question ${index + 1}',
                               textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 16),
                             ),
                           ),
                           SizedBox(width: 12),
                           DropdownButtonHideUnderline(
                             child: Container(
                               decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black),
+                                border: Border.all(color: Color(0xFF9A9A9A)),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               width: MediaQuery.of(context).size.width * 0.25,
@@ -192,10 +220,13 @@ class _COQuestionMappingState extends State<COQuestionMapping> {
                     );
                   },
                 ),
+                SizedBox(
+                  height: 24,
+                ),
                 _numberOfQuestions == 0
                     ? Container()
                     : Container(
-                        width: MediaQuery.of(context).size.width * 0.15,
+                        width: MediaQuery.of(context).size.width * 0.25,
                         padding: EdgeInsets.all(8),
                         child: ElevatedButton(
                           onPressed: () {

@@ -29,6 +29,16 @@ class _CheckStatisticsState extends State<CheckStatistics> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              Center(
+                child: Text(
+                  "Check Statistics",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
               DropdownButtonHideUnderline(
                 child: Container(
                   decoration: BoxDecoration(

@@ -1,3 +1,4 @@
+import 'package:co_attainment_platform/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 
 class UpdateCOThresholdPage extends StatefulWidget {
@@ -27,7 +28,7 @@ class _UpdateCOThresholdPageState extends State<UpdateCOThresholdPage> {
     // Create AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text(title),
-      content: Text(content), 
+      content: Text(content),
       actions: [
         okButton,
       ],
@@ -45,15 +46,11 @@ class _UpdateCOThresholdPageState extends State<UpdateCOThresholdPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Update CO Threshold > ' +
-              widget.model.currentCourse.courseName +
-              " (" +
-              widget.model.currentCourse.courseCode +
-              ")",
-        ),
-      ),
+      appBar: buildCustomAppBar('Update CO Threshold - ' +
+          widget.model.currentCourse.courseName +
+          " (" +
+          widget.model.currentCourse.courseCode +
+          ")"),
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width * 0.25,

@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                                       alignment: Alignment.centerLeft,
                                     ),
                                     onPressed: () async {
-                                      bool result = true;
+                                      bool result = false;
 
                                       if (taskName == "Assign CO Threshold") {
                                         result = await widget.model
@@ -82,7 +82,6 @@ class _HomePageState extends State<HomePage> {
                                         result = await widget.model
                                             .getAvailableBranchCodes();
                                       }
-
                                       if (result) {
                                         Navigator.pushNamed(
                                           context,

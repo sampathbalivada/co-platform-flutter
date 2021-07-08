@@ -147,6 +147,7 @@ class COPlatform extends Model {
   // ==============
 
   Future<bool> getAvailableBranchCodes() async {
+    _branchCodes = [];
     var branchCodesResponse =
         await this._supabaseClient.rpc('get_stored_branch_codes').execute();
 
