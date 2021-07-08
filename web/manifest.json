@@ -1,12 +1,12 @@
 {
-    "name": "co_attainment_platform",
-    "short_name": "co_attainment_platform",
+    "name": "VIIT - CO Platform",
+    "short_name": "CO Platform",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
-    "orientation": "portrait-primary",
+    "description": "CO Attainment Calculation Platform for Vignan's Institute of Information Technology, Duvvada.",
+    "orientation": "landscape-primary",
     "prefer_related_applications": false,
     "icons": [
         {
