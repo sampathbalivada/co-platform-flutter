@@ -161,16 +161,15 @@ class _AddCoursePageState extends State<AddCoursePage> {
                       } else {
                         print("Error");
                       }
+                      setState(() {
+                        courseCode.text = "";
+                        courseName.text = "";
+                        coordinatorEmail.text = "";
+                        yearSelected = "None";
+                        _isloading = false;
+                        branchCode.text = "";
+                      });
                     }
-
-                    setState(() {
-                      courseCode.text = "";
-                      courseName.text = "";
-                      coordinatorEmail.text = "";
-                      yearSelected = "None";
-                      _isloading = false;
-                      branchCode.text = "";
-                    });
                   },
                 ),
               ),

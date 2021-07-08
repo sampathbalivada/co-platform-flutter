@@ -16,12 +16,15 @@ class _AddFacultyToCourseState extends State<AddFacultyToCourse> {
   TextEditingController facultyEmail = TextEditingController();
   String yearSelected = "None";
   DateTime selectedYear = DateTime(2021);
-  showAlertDialog(BuildContext context, String title, String content) {
+  showAlertDialog(BuildContext context, String title, String content,
+      {bool error = false}) {
     // Create button
     Widget okButton = TextButton(
       child: Text("OK"),
       onPressed: () {
-        Navigator.of(context).pop();
+        error
+            ? Navigator.of(context).pop()
+            : Navigator.popUntil(context, ModalRoute.withName('/home'));
       },
     );
 
@@ -46,8 +49,8 @@ class _AddFacultyToCourseState extends State<AddFacultyToCourse> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          buildCustomAppBar("Home > HOD > Add Faculty to Course", widget.model, context),
+      appBar: buildCustomAppBar(
+          "Home > HOD > Add Faculty to Course", widget.model, context),
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width * 0.25,
@@ -118,36 +121,48 @@ class _AddFacultyToCourseState extends State<AddFacultyToCourse> {
                       ? Center(child: CircularProgressIndicator())
                       : Text("Add Faculty to Course"),
                   onPressed: () async {
-                    setState(() {
-                      _isloading = true;
-                    });
+                    bool errorStatus = false;
+                    if (courseCode.text == "" ||
+                        facultyEmail.text == "" ||
+                        yearSelected == "None" ||
+                        branchCode.text == "") {
+                      errorStatus = true;
+                    }
 
-                    bool result = await widget.model.addFacultyToCourse(
-                      courseCode.text,
-                      yearSelected,
-                      int.parse(branchCode.text),
-                      facultyEmail.text,
-                    );
-
-                    if (result) {
+                    if (errorStatus) {
                       showAlertDialog(
                         context,
-                        'Added Faculty',
-                        'Sucessfully added ${facultyEmail.text} as faculty to the course ${courseCode.text} of batch $yearSelected and branch ${branchCode.text}',
+                        'Input Error',
+                        'Missing Value Error: One or more of the values are missing. All values are required to add faculty to a course.',
+                        error: true,
                       );
-                      setState(() {
-                        courseCode.text = "";
-                        facultyEmail.text = "";
-                        yearSelected = "None";
-                        _isloading = false;
-                        branchCode.text = "";
-                      });
                     } else {
-                      showAlertDialog(
-                        context,
-                        'Error while adding Faculty',
-                        'Internal Application Error: Faculty Email-ID might already exist.',
+                      setState(() {
+                        _isloading = true;
+                      });
+
+                      bool result = await widget.model.addFacultyToCourse(
+                        courseCode.text,
+                        yearSelected,
+                        int.parse(branchCode.text),
+                        facultyEmail.text,
                       );
+
+                      if (result) {
+                        showAlertDialog(
+                          context,
+                          'Added Faculty',
+                          'Sucessfully added ${facultyEmail.text} as faculty to the course ${courseCode.text} of batch $yearSelected and branch ${branchCode.text}',
+                        );
+                      } else {
+                        showAlertDialog(
+                          context,
+                          'Error while adding Faculty',
+                          'Internal Application Error: Faculty Email-ID might already exist.',
+                        );
+
+                        print("Error");
+                      }
                       setState(() {
                         courseCode.text = "";
                         facultyEmail.text = "";
@@ -155,7 +170,6 @@ class _AddFacultyToCourseState extends State<AddFacultyToCourse> {
                         _isloading = false;
                         branchCode.text = "";
                       });
-                      print("Error");
                     }
                   },
                 ),
