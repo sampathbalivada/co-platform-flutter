@@ -1,3 +1,4 @@
+import 'package:co_attainment_platform/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 
 class AddCoursePage extends StatefulWidget {
@@ -48,15 +49,25 @@ class _AddCoursePageState extends State<AddCoursePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Home > HOD > Add Course'),
-      ),
+      appBar: buildCustomAppBar('Home > HOD > Add Course'),
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width * 0.25,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              Text(
+                "Add Course",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              buildCustomTextField(
+                  branchCode, TextInputType.emailAddress, "Branch Code"),
               buildCustomTextField(
                   courseCode, TextInputType.text, "Course Code"),
               buildCustomTextField(
@@ -97,10 +108,11 @@ class _AddCoursePageState extends State<AddCoursePage> {
                   ),
                 ),
               ),
-              buildCustomTextField(
-                  branchCode, TextInputType.emailAddress, "Branch Code"),
               buildCustomTextField(coordinatorEmail, TextInputType.emailAddress,
                   "Coordinator Email"),
+              SizedBox(
+                height: 12,
+              ),
               Container(
                 height: 60,
                 padding: EdgeInsets.all(10),
