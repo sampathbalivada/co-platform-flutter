@@ -1,3 +1,4 @@
+import 'package:co_attainment_platform/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -21,23 +22,21 @@ class _CheckStatisticsState extends State<CheckStatistics> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Check Statistics"),
-      ),
+      appBar: buildCustomAppBar("Home > Common > Check Statistics"),
       body: Center(
         child: Container(
-          width: MediaQuery.of(context).size.width * 0.25,
+          width: MediaQuery.of(context).size.width * 0.2,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               DropdownButtonHideUnderline(
                 child: Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Color(0xFF9A9A9A)),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  width: MediaQuery.of(context).size.width * 0.25,
-                  padding: EdgeInsets.only(left: 12, right: 12),
+                  width: MediaQuery.of(context).size.width * 0.2,
+                  padding: EdgeInsets.only(left: 16, right: 16),
                   child: DropdownButton<int>(
                     value: _selectedBranch,
                     //elevation: 5,
@@ -59,6 +58,7 @@ class _CheckStatisticsState extends State<CheckStatistics> {
                   ),
                 ),
               ),
+              SizedBox(height: 12),
               Container(
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.all(8),
@@ -75,7 +75,7 @@ class _CheckStatisticsState extends State<CheckStatistics> {
                     }
                   },
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Text(
                       'Select Course and Mid',
                       style: TextStyle(fontSize: 18),
