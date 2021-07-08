@@ -1,6 +1,7 @@
 import 'package:co_attainment_platform/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class ShowStatistics extends StatelessWidget {
   final model;
 
@@ -69,6 +70,7 @@ class ShowStatistics extends StatelessWidget {
 
   // ignore: non_constant_identifier_names
   void addDataToRow(List<TableCell> children,
+      // ignore: non_constant_identifier_names
       {String A = '-', String NA = '-'}) {
     children.add(buildCustomCell(A));
     children.add(buildCustomCell(NA));

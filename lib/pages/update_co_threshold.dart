@@ -16,12 +16,15 @@ class _UpdateCOThresholdPageState extends State<UpdateCOThresholdPage> {
   TextEditingController _thresholdForCO3 = TextEditingController();
   TextEditingController _thresholdForCO4 = TextEditingController();
 
-  showAlertDialog(BuildContext context, String title, String content) {
+  showAlertDialog(BuildContext context, String title, String content,
+      {bool error = false}) {
     // Create button
     Widget okButton = TextButton(
       child: Text("OK"),
       onPressed: () {
-        Navigator.popUntil(context, ModalRoute.withName('/home'));
+        error
+            ? Navigator.pop(context)
+            : Navigator.popUntil(context, ModalRoute.withName('/home'));
       },
     );
 
@@ -89,24 +92,40 @@ class _UpdateCOThresholdPageState extends State<UpdateCOThresholdPage> {
                 padding: EdgeInsets.all(8),
                 child: ElevatedButton(
                   onPressed: () async {
-                    var result = await widget.model.updateCOMappingAndThreshold(
-                      [
+                    var errorStatus = false;
+                    List<int> data = [];
+                    try {
+                      data = [
                         int.parse(_thresholdForCO1.text),
                         int.parse(_thresholdForCO2.text),
                         int.parse(_thresholdForCO3.text),
                         int.parse(_thresholdForCO4.text),
-                      ],
-                    );
+                      ];
+                    } catch (e) {
+                      errorStatus = true;
+                    }
 
-                    if (result) {
+                    if (errorStatus) {
                       showAlertDialog(
                         context,
-                        'CO Threshold Updated and Questions are mapped to CO',
-                        'The CO Threshold for Mid ${widget.model.mid} of course ${widget.model.currentCourse.courseName} with course code ${widget.model.currentCourse.courseCode} have been updated.',
+                        'Input Error',
+                        'Number Format Error: Make sure to only enter digits in the text field.\nIf there is no question mapped to a particular CO, enter 0 as the value.',
+                        error: true,
                       );
                     } else {
-                      showAlertDialog(context, 'Threshold Update Error',
-                          'Unable to update CO Threshold. Contact admin for further assistance.');
+                      var result =
+                          await widget.model.updateCOMappingAndThreshold(data);
+
+                      if (result) {
+                        showAlertDialog(
+                          context,
+                          'CO Threshold Updated and Questions are mapped to CO',
+                          'The CO Threshold for Mid ${widget.model.mid} of course ${widget.model.currentCourse.courseName} with course code ${widget.model.currentCourse.courseCode} have been updated.',
+                        );
+                      } else {
+                        showAlertDialog(context, 'Threshold Update Error',
+                            'Unable to update CO Threshold. Contact admin for further assistance.');
+                      }
                     }
 
                     _thresholdForCO1.text = '';

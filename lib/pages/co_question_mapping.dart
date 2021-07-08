@@ -1,7 +1,6 @@
 import 'package:co_attainment_platform/widgets/appbar.dart';
+import 'package:co_attainment_platform/widgets/text_field.dart' as text_field;
 import 'package:flutter/material.dart';
-
-import '../widgets/text_field.dart';
 
 class COQuestionMapping extends StatefulWidget {
   final model;
@@ -20,6 +19,33 @@ class _COQuestionMappingState extends State<COQuestionMapping> {
       _questionController.add(TextEditingController());
       _COController.add('1');
     }
+  }
+
+  showAlertDialog(BuildContext context, String title, String content) {
+    // Create button
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // Create AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(title),
+      content: Text(content),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   TextEditingController _numberOfQuestionsController = TextEditingController();
@@ -47,7 +73,7 @@ class _COQuestionMappingState extends State<COQuestionMapping> {
                 SizedBox(height: 24),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.25,
-                  child: buildCustomTextField(
+                  child: text_field.buildCustomTextField(
                       _numberOfQuestionsController,
                       TextInputType.number,
                       'Number of Questions',
@@ -209,7 +235,7 @@ class _COQuestionMappingState extends State<COQuestionMapping> {
                           SizedBox(width: 12),
                           Container(
                             width: MediaQuery.of(context).size.width * 0.25,
-                            child: buildCustomTextField(
+                            child: text_field.buildCustomTextField(
                                 _questionController[index],
                                 TextInputType.number,
                                 'Question ${index + 1}',
@@ -232,20 +258,34 @@ class _COQuestionMappingState extends State<COQuestionMapping> {
                           onPressed: () {
                             List<int> _coControl = [];
                             List<int> _marksControl = [];
+                            bool errorStatus = false;
                             for (int i = 0; i < _numberOfQuestions; i++) {
-                              _marksControl
-                                  .add(int.parse(_questionController[i].text));
-                              _coControl.add(int.parse(_COController[i]));
+                              try {
+                                _marksControl.add(
+                                    int.parse(_questionController[i].text));
+                                _coControl.add(int.parse(_COController[i]));
+                              } catch (e) {
+                                errorStatus = true;
+                                break;
+                              }
                             }
-                            widget.model.storeCOMapping(
-                              _numberOfQuestions,
-                              _coControl,
-                              _marksControl,
-                              int.parse(_mid),
-                            );
+                            if (errorStatus) {
+                              showAlertDialog(
+                                context,
+                                'Invalid Marks',
+                                'Number Format Error: Make sure to only enter digits in the text field.',
+                              );
+                            } else {
+                              widget.model.storeCOMapping(
+                                _numberOfQuestions,
+                                _coControl,
+                                _marksControl,
+                                int.parse(_mid),
+                              );
 
-                            Navigator.pushNamed(
-                                context, "/update_co_threshold");
+                              Navigator.pushNamed(
+                                  context, "/update_co_threshold");
+                            }
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),

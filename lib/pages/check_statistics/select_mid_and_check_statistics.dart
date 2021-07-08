@@ -13,7 +13,6 @@ class SelectMidAndCheckStatistics extends StatefulWidget {
 
 class _SelectMidAndCheckStatisticsState
     extends State<SelectMidAndCheckStatistics> {
-  String _mid = '1';
   @override
   Widget build(BuildContext context) {
     return Scaffold(

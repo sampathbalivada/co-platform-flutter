@@ -255,7 +255,7 @@ class COPlatform extends Model {
     }
     for (var i in secs) {
       if (counts[i] == 0) {
-        for (var j in fetchData["attainment_count"][i]) {
+        for (var _ in fetchData["attainment_count"][i]) {
           _statistics[i]!.add(0);
         }
         continue;

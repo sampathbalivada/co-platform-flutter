@@ -19,12 +19,15 @@ class _AddCoursePageState extends State<AddCoursePage> {
   TextEditingController coordinatorEmail = TextEditingController();
   String yearSelected = "None";
   DateTime selectedYear = DateTime(2021);
-  showAlertDialog(BuildContext context, String title, String content) {
+  showAlertDialog(BuildContext context, String title, String content,
+      {bool error = false}) {
     // Create button
     Widget okButton = TextButton(
       child: Text("OK"),
       onPressed: () {
-        Navigator.of(context).pop();
+        error
+            ? Navigator.of(context).pop()
+            : Navigator.popUntil(context, ModalRoute.withName('/home'));
       },
     );
 
@@ -49,7 +52,8 @@ class _AddCoursePageState extends State<AddCoursePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildCustomAppBar('Home > HOD > Add Course', widget.model, context),
+      appBar:
+          buildCustomAppBar('Home > HOD > Add Course', widget.model, context),
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width * 0.25,
@@ -122,40 +126,51 @@ class _AddCoursePageState extends State<AddCoursePage> {
                       ? Center(child: CircularProgressIndicator())
                       : Text("Add Course"),
                   onPressed: () async {
-                    setState(() {
-                      _isloading = true;
-                    });
-                    bool result = await widget.model.addCourse(
-                        courseCode.text,
-                        yearSelected,
-                        courseName.text,
-                        coordinatorEmail.text,
-                        int.parse(branchCode.text));
-                    if (result) {
+                    bool errorStatus = false;
+                    if (courseCode.text == "" ||
+                        courseName.text == "" ||
+                        coordinatorEmail.text == "" ||
+                        yearSelected == "None" ||
+                        branchCode.text == "") {
+                      errorStatus = true;
+                    }
+
+                    if (errorStatus) {
                       showAlertDialog(
                         context,
-                        'Course Added',
-                        'The course ${courseName.text} with ${courseCode.text} for the batch $yearSelected is successfully added.',
+                        'Input Error',
+                        'Missing Value Error: One or more of the values are missing. All values are required to add a course.',
+                        error: true,
                       );
-                      setState(() {
-                        courseCode.text = "";
-                        courseName.text = "";
-                        coordinatorEmail.text = "";
-                        yearSelected = "None";
-                        _isloading = false;
-                        branchCode.text = "";
-                      });
                     } else {
                       setState(() {
-                        courseCode.text = "";
-                        courseName.text = "";
-                        coordinatorEmail.text = "";
-                        yearSelected = "None";
-                        _isloading = false;
-                        branchCode.text = "";
+                        _isloading = true;
                       });
-                      print("Error");
+                      bool result = await widget.model.addCourse(
+                          courseCode.text,
+                          yearSelected,
+                          courseName.text,
+                          coordinatorEmail.text,
+                          int.parse(branchCode.text));
+                      if (result) {
+                        showAlertDialog(
+                          context,
+                          'Course Added',
+                          'The course ${courseName.text} with ${courseCode.text} for the batch $yearSelected is successfully added.',
+                        );
+                      } else {
+                        print("Error");
+                      }
                     }
+
+                    setState(() {
+                      courseCode.text = "";
+                      courseName.text = "";
+                      coordinatorEmail.text = "";
+                      yearSelected = "None";
+                      _isloading = false;
+                      branchCode.text = "";
+                    });
                   },
                 ),
               ),
