@@ -15,8 +15,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          buildCustomAppBar('Vignan\'s Institute of Information Technology'),
+      appBar: buildCustomAppBar('Vignan\'s Institute of Information Technology',
+          widget.model.emailId),
       body: Center(
         child: _isloading
             ? CircularProgressIndicator()

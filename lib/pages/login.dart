@@ -48,8 +48,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          buildCustomAppBar('Vignan\'s Institute of Information Technology'),
+      appBar: buildCustomAppBar(
+          'Vignan\'s Institute of Information Technology', ""),
       body: Center(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,

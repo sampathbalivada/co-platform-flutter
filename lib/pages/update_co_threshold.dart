@@ -46,11 +46,13 @@ class _UpdateCOThresholdPageState extends State<UpdateCOThresholdPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildCustomAppBar('Update CO Threshold - ' +
-          widget.model.currentCourse.courseName +
-          " (" +
-          widget.model.currentCourse.courseCode +
-          ")"),
+      appBar: buildCustomAppBar(
+          'Update CO Threshold - ' +
+              widget.model.currentCourse.courseName +
+              " (" +
+              widget.model.currentCourse.courseCode +
+              ")",
+          widget.model.emailId),
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width * 0.25,

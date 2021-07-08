@@ -109,8 +109,9 @@ class _AssignCOThresholdPageState extends State<AssignCOThresholdPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          buildCustomAppBar('Home > Course Coordinator > Assign CO Threshold'),
+      appBar: buildCustomAppBar(
+          'Home > Course Coordinator > Assign CO Threshold',
+          widget.model.emailId),
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width * 0.25,

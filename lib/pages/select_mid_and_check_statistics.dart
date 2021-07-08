@@ -18,7 +18,8 @@ class _SelectMidAndCheckStatisticsState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildCustomAppBar(
-          "Home > Common > Check Statistics > Select Course > Select Mid"),
+          "Home > Common > Check Statistics > Select Course > Select Mid",
+          widget.model.emailId),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,

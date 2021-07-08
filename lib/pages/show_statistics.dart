@@ -77,12 +77,14 @@ class ShowStatistics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildCustomAppBar('Statistics for ' +
-          model.currentCourse.courseName +
-          ' - ' +
-          model.currentCourse.courseCode +
-          ' - Mid ' +
-          model.midSelected),
+      appBar: buildCustomAppBar(
+          'Statistics for ' +
+              model.currentCourse.courseName +
+              ' - ' +
+              model.currentCourse.courseCode +
+              ' - Mid ' +
+              model.midSelected,
+          model.emailId),
       //  AppBar(
       //   title: Text(
       //     'Statistics for ' +

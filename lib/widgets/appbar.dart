@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-AppBar buildCustomAppBar(String title) {
+AppBar buildCustomAppBar(String title, String email) {
   String left = '';
   String right = title;
 
@@ -33,6 +33,26 @@ AppBar buildCustomAppBar(String title) {
         ),
       ],
     ),
+    actions: [
+      Center(
+        child: Text(
+          email,
+          style: TextStyle(color: Colors.black),
+        ),
+      ),
+      SizedBox(
+        width: 20,
+      ),
+      email != ""
+          ? Icon(
+              Icons.exit_to_app,
+              color: Colors.black,
+            )
+          : SizedBox(),
+      SizedBox(
+        width: 20,
+      ),
+    ],
     iconTheme: IconThemeData(color: Colors.black),
   );
 }

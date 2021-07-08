@@ -46,7 +46,8 @@ class _AddFacultyToCourseState extends State<AddFacultyToCourse> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildCustomAppBar("Home > HOD > Add Faculty to Course"),
+      appBar: buildCustomAppBar(
+          "Home > HOD > Add Faculty to Course", widget.model.emailId),
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width * 0.25,

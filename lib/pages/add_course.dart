@@ -49,7 +49,8 @@ class _AddCoursePageState extends State<AddCoursePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildCustomAppBar('Home > HOD > Add Course'),
+      appBar:
+          buildCustomAppBar('Home > HOD > Add Course', widget.model.emailId),
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width * 0.25,

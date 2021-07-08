@@ -112,8 +112,9 @@ class _SelectCourseForStatisticsState extends State<SelectCourseForStatistics> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          buildCustomAppBar("Home > Common > Check Statistics > Select Course"),
+      appBar: buildCustomAppBar(
+          "Home > Common > Check Statistics > Select Course",
+          widget.model.emailId),
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width * 0.25,
