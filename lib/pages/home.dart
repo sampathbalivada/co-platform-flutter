@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                                       alignment: Alignment.centerLeft,
                                     ),
                                     onPressed: () async {
-                                      bool result = false;
+                                      bool result = true;
 
                                       if (taskName == "Assign CO Threshold") {
                                         result = await widget.model
