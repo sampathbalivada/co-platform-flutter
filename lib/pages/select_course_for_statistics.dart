@@ -113,8 +113,7 @@ class _SelectCourseForStatisticsState extends State<SelectCourseForStatistics> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildCustomAppBar(
-          "Home > Common > Check Statistics > Select Course",
-          widget.model.emailId),
+          "Home > Common > Check Statistics > Select Course", widget.model, context),
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width * 0.25,

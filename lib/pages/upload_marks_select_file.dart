@@ -18,7 +18,7 @@ class _UploadMarksSelectFileState extends State<UploadMarksSelectFile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildCustomAppBar("Select File and Mid", widget.model.emailId),
+      appBar: buildCustomAppBar("Select File and Mid", widget.model, context),
       body: Center(
         child: Container(
           decoration: BoxDecoration(

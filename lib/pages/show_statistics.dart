@@ -84,17 +84,8 @@ class ShowStatistics extends StatelessWidget {
               model.currentCourse.courseCode +
               ' - Mid ' +
               model.midSelected,
-          model.emailId),
-      //  AppBar(
-      //   title: Text(
-      //     'Statistics for ' +
-      //         model.currentCourse.courseName +
-      //         ' - ' +
-      //         model.currentCourse.courseCode +
-      //         ' - Mid ' +
-      //         model.midSelected,
-      //   ),
-      // ),
+          model,
+          context),
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width * 0.8,

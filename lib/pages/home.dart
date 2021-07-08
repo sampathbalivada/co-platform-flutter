@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildCustomAppBar('Vignan\'s Institute of Information Technology',
-          widget.model.emailId),
+          widget.model, context),
       body: Center(
         child: _isloading
             ? CircularProgressIndicator()

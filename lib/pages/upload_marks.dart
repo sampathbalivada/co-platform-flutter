@@ -112,7 +112,7 @@ class _UploadMarksState extends State<UploadMarks> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildCustomAppBar("Home > Upload Marks", widget.model.emailId),
+      appBar: buildCustomAppBar("Home > Upload Marks", widget.model, context),
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width * 0.25,

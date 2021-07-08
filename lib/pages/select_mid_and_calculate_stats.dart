@@ -17,7 +17,7 @@ class _SelectMidAndCalculateStatsState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildCustomAppBar("Calculate Statistics", widget.model.emailId),
+      appBar: buildCustomAppBar("Calculate Statistics", widget.model, context),
       body: Center(
         child: Container(
           decoration: BoxDecoration(

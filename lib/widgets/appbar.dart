@@ -1,6 +1,36 @@
 import 'package:flutter/material.dart';
 
-AppBar buildCustomAppBar(String title, String email) {
+showAlertDialog(BuildContext context, var model) {
+  // set up the button
+  Widget okButton = TextButton(
+    child: Text("Log Out"),
+    onPressed: () {
+      model.logout();
+      Navigator.popUntil(context, ModalRoute.withName('/home'));
+      Navigator.popAndPushNamed(context, '/');
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Logging Out"),
+    content: Text("Are you sure you want to Logout of the application?"),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+AppBar buildCustomAppBar(String title, var model, BuildContext context,
+    {bool isLoginPage = false}) {
   String left = '';
   String right = title;
 
@@ -33,26 +63,29 @@ AppBar buildCustomAppBar(String title, String email) {
         ),
       ],
     ),
-    actions: [
-      Center(
-        child: Text(
-          email,
-          style: TextStyle(color: Colors.black),
-        ),
-      ),
-      SizedBox(
-        width: 20,
-      ),
-      email != ""
-          ? Icon(
-              Icons.exit_to_app,
+    actions: isLoginPage == false
+        ? [
+            Center(
+              child: Text(
+                model.emailId,
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            SizedBox(
+              width: 20,
+            ),
+            IconButton(
+              icon: Icon(Icons.exit_to_app_rounded),
               color: Colors.black,
-            )
-          : SizedBox(),
-      SizedBox(
-        width: 20,
-      ),
-    ],
+              onPressed: () {
+                showAlertDialog(context, model);
+              },
+            ),
+            SizedBox(
+              width: 20,
+            ),
+          ]
+        : [],
     iconTheme: IconThemeData(color: Colors.black),
   );
 }

@@ -112,8 +112,7 @@ class _CalculateStatisticsState extends State<CalculateStatistics> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildCustomAppBar(
-          "Home > Calculate Statistics", widget.model.emailId),
+      appBar: buildCustomAppBar("Home > Calculate Statistics", widget.model, context),
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width * 0.25,

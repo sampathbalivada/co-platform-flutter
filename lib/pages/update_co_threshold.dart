@@ -52,7 +52,8 @@ class _UpdateCOThresholdPageState extends State<UpdateCOThresholdPage> {
               " (" +
               widget.model.currentCourse.courseCode +
               ")",
-          widget.model.emailId),
+          widget.model,
+          context),
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width * 0.25,

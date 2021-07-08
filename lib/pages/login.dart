@@ -49,7 +49,11 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildCustomAppBar(
-          'Vignan\'s Institute of Information Technology', ""),
+        'Vignan\'s Institute of Information Technology',
+        widget.model,
+        context,
+        isLoginPage: true,
+      ),
       body: Center(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,

@@ -22,8 +22,8 @@ class _CheckStatisticsState extends State<CheckStatistics> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildCustomAppBar(
-          "Home > Common > Check Statistics", widget.model.emailId),
+      appBar:
+          buildCustomAppBar("Home > Common > Check Statistics", widget.model, context),
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width * 0.2,

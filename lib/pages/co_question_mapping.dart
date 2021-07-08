@@ -35,7 +35,7 @@ class _COQuestionMappingState extends State<COQuestionMapping> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildCustomAppBar('CO Question Mapping', widget.model.emailId),
+      appBar: buildCustomAppBar('CO Question Mapping', widget.model, context),
       body: Center(
         child: ListView(
           children: [

@@ -142,6 +142,16 @@ class COPlatform extends Model {
     }
   }
 
+  void logout() {
+    _tasks = {
+      "Faculty": ["Upload Marks"],
+      "HOD": ["Calculate Statistics", "Add Course", "Add Faculty to Course"],
+      "Course Coordinator": ["Assign CO Threshold"],
+      "Common": ["Check Statistics"]
+    };
+    _roles = ["Common"];
+  }
+
   // ==============
   // === Common ===
   // ==============
