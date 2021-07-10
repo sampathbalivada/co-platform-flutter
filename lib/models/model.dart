@@ -282,6 +282,9 @@ class COPlatform extends Model {
     String coordinatorEmail,
     int branchCode,
   ) async {
+    if (courseCode.length != 10) {
+      return false;
+    }
     final result = await this._supabaseClient.from('courses').upsert(
       {
         'course_code': courseCode,

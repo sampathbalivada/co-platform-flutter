@@ -159,7 +159,11 @@ class _AddCoursePageState extends State<AddCoursePage> {
                           'The course ${courseName.text} with ${courseCode.text} for the batch $yearSelected is successfully added.',
                         );
                       } else {
-                        print("Error");
+                        showAlertDialog(
+                          context,
+                          'Course Not Added',
+                          'Please make sure your Internet connection is good and CourseCode length should be of 10 characters.',
+                        );
                       }
                       setState(() {
                         courseCode.text = "";
