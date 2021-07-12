@@ -26,11 +26,13 @@ class Question {
   final int maxMarks;
   // ignore: non_constant_identifier_names
   final int COMapped;
+  final String topics;
 
   Question(
     this.number,
     this.maxMarks,
     this.COMapped,
+    this.topics,
   );
 }
 
@@ -500,6 +502,7 @@ class COPlatform extends Model {
     // ignore: non_constant_identifier_names
     List<int> COMapping,
     List<int> maxMarks,
+    List<String> topics,
     int mid,
   ) {
     _mid = mid;
@@ -507,7 +510,7 @@ class COPlatform extends Model {
     List<Question> questions = [];
 
     for (var i = 0; i < numberOfQuestions; i++) {
-      questions.add(Question(i + 1, maxMarks[i], COMapping[i]));
+      questions.add(Question(i + 1, maxMarks[i], COMapping[i], topics[i]));
     }
 
     _questions = questions;
@@ -542,6 +545,7 @@ class COPlatform extends Model {
         'question_number': question.number,
         'max_marks': question.maxMarks,
         'co': question.COMapped,
+        'topics': question.topics,
       });
     }
 
