@@ -101,16 +101,16 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         onPressed: () async {
-                          // bool r = await widget.model.signIn(
-                          //   signInEmailId.text,
-                          //   signInPassword.text,
-                          // );
+                          bool r = await widget.model.signIn(
+                            signInEmailId.text,
+                            signInPassword.text,
+                          );
 
                           // debug
-                          bool r = await widget.model.signIn(
-                            'sri@sampath.dev',
-                            'google',
-                          );
+                          // bool r = await widget.model.signIn(
+                          //   'sri@sampath.dev',
+                          //   'google',
+                          // );
 
                           if (r) {
                             Navigator.pushReplacementNamed(context, '/home');
