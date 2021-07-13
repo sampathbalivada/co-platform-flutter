@@ -36,15 +36,21 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     SizedBox(height: 10),
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Color(0xFF9A9A9A)),
+                    Card(
+                      elevation: 12,
+                      shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
+                      // decoration: BoxDecoration(
+                      //   border: Border.all(color: Color(0xFF9A9A9A)),
+                      //   borderRadius: BorderRadius.circular(12),
+                      // ),
                       child: ListView.builder(
                         shrinkWrap: true,
                         itemBuilder: (BuildContext context, int index) {
                           return ExpansionTile(
+                            textColor: Colors.purple,
+                            collapsedTextColor: Colors.black,
                             title: Text(
                               widget.model.roles[index],
                               style: TextStyle(
@@ -100,6 +106,7 @@ class _HomePageState extends State<HomePage> {
                                         taskName,
                                         style: TextStyle(
                                           fontSize: 18,
+                                          color: Colors.blue,
                                         ),
                                       ),
                                     ),

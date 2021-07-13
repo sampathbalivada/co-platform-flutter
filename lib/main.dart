@@ -17,6 +17,8 @@ import 'pages/home.dart';
 import 'pages/login.dart';
 import 'pages/update_co_threshold.dart';
 
+import 'package:google_fonts/google_fonts.dart';
+
 main() {
   COPlatform _model = COPlatform();
 
@@ -28,10 +30,17 @@ class MainApp extends StatelessWidget {
 
   MainApp(this._model);
 
+  final textTheme = GoogleFonts.notoSansTextTheme();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'CO Platform - VIIT',
+      theme: ThemeData.light().copyWith(
+          textTheme: textTheme,
+          appBarTheme: AppBarTheme(
+            textTheme: textTheme,
+          )),
       routes: {
         "/": (context) => LoginPage(model: _model),
         "/home": (context) => HomePage(model: _model),
