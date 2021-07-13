@@ -31,6 +31,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'CO Platform - VIIT',
       routes: {
         "/": (context) => LoginPage(model: _model),
         "/home": (context) => HomePage(model: _model),
