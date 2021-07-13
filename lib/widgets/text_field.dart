@@ -14,7 +14,7 @@ Widget buildCustomTextField(TextEditingController controller,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.only(left: 8, right: 8),
           labelText: label,
-          hintText: "Enter " + label,
+          hintText: hintText,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
           ),

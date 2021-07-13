@@ -15,7 +15,7 @@ class _COQuestionMappingState extends State<COQuestionMapping> {
   @override
   void initState() {
     super.initState();
-    for (var i = 0; i < 12; i++) {
+    for (var i = 0; i < 20; i++) {
       _questionController.add(TextEditingController());
       _topicsController.add(TextEditingController());
       _COController.add('1');
@@ -90,7 +90,7 @@ class _COQuestionMappingState extends State<COQuestionMapping> {
                         numberOfQuestions = int.parse(value);
                       }
                       _numberOfQuestions =
-                          numberOfQuestions >= 12 ? 12 : numberOfQuestions;
+                          numberOfQuestions >= 20 ? 20 : numberOfQuestions;
                     });
                   }),
                 ),
