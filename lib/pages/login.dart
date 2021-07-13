@@ -54,158 +54,256 @@ class _LoginPageState extends State<LoginPage> {
         context,
         isLoginPage: true,
       ),
-      body: Center(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.only(left: 240, right: 120),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'Sign In',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    SizedBox(height: 24),
-                    buildCustomTextField(
-                      signInEmailId,
-                      TextInputType.emailAddress,
-                      'Email-ID',
-                    ),
-                    buildCustomTextField(
-                      signInPassword,
-                      TextInputType.visiblePassword,
-                      'Password',
-                      obscureText: true,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.only(
-                        left: 75,
-                        right: 75,
-                        top: 8,
-                        bottom: 8,
-                      ),
-                      width: MediaQuery.of(context).size.width,
-                      // height: 50,
-                      child: ElevatedButton(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Login',
-                            style: TextStyle(fontSize: 18),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
+            // colors: [
+            //   Color(0xbff00acee),
+            //   Color(0xbff00acee),
+            //   Color(0xbffb200f0),
+            //   // Color(0xbff50c878),
+            //   Color(0xbff50c878),
+            // ],
+            colors: [
+              Color(0xbff4158D0),
+              // Color(0xbff00acee),
+              Color(0xbffC850C0),
+              // Color(0xbff50c878),
+              Color(0xbffFFCC70),
+            ],
+          ),
+        ),
+        child: Center(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.only(left: 240, right: 120),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                          // color: Colors.white,
+                          height: 500,
+                          width: 400,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: Colors.white,
                           ),
-                        ),
-                        onPressed: () async {
-                          // bool r = await widget.model.signIn(
-                          //   signInEmailId.text,
-                          //   signInPassword.text,
-                          // );
+                          child: Column(
+                            children: [
+                              Padding(padding: EdgeInsets.only(top: 100)),
+                              Text(
+                                'Sign In',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              SizedBox(height: 40),
+                              buildCustomTextField(
+                                signInEmailId,
+                                TextInputType.emailAddress,
+                                'Email-ID',
+                              ),
+                              buildCustomTextField(
+                                signInPassword,
+                                TextInputType.visiblePassword,
+                                'Password',
+                                obscureText: true,
+                              ),
+                              Container(
+                                padding: const EdgeInsets.only(
+                                  left: 75,
+                                  right: 75,
+                                  top: 50,
+                                  bottom: 8,
+                                ),
+                                width: MediaQuery.of(context).size.width,
+                                // height: 50,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    padding: EdgeInsets.zero,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                  ),
+                                  child: Ink(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      gradient: LinearGradient(
+                                        begin: Alignment.bottomLeft,
+                                        end: Alignment.topRight,
+                                        colors: [
+                                          Color(0xbff4158D0),
+                                          Color(0xbff4158D0),
+                                          Color(0xbffC850C0),
+                                          // Color(0xbff50c878),
+                                          // Color(0xbff50c878),
+                                        ],
+                                      ),
+                                    ),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(8.0),
+                                      width: 300,
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        'Login',
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    // bool r = await widget.model.signIn(
+                                    //   signInEmailId.text,
+                                    //   signInPassword.text,
+                                    // );
 
-                          // debug
-                          bool r = await widget.model.signIn(
-                            'sri@sampath.dev',
-                            'google',
-                          );
+                                    // debug
+                                    bool r = await widget.model.signIn(
+                                      'sri@sampath.dev',
+                                      'google',
+                                    );
 
-                          if (r) {
-                            Navigator.pushReplacementNamed(context, '/home');
-                          } else {
-                            showAlertDialog(
-                              context,
-                              'Login Error',
-                              'Invalid email ID or password. If you just registered, make sure to verify your email.',
-                            );
-                          }
-                        },
-                      ),
-                    ),
-                  ],
+                                    if (r) {
+                                      Navigator.pushReplacementNamed(
+                                          context, '/home');
+                                    } else {
+                                      showAlertDialog(
+                                        context,
+                                        'Login Error',
+                                        'Invalid email ID or password. If you just registered, make sure to verify your email.',
+                                      );
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
+                          ))
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 200, bottom: 200),
-              child: VerticalDivider(
-                thickness: 1,
-                color: Color(0xFF9A9A9A),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.only(left: 120, right: 240),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'Register',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    SizedBox(height: 24),
-                    buildCustomTextField(
-                      signUpEmailId,
-                      TextInputType.emailAddress,
-                      'Email-ID',
-                    ),
-                    buildCustomTextField(
-                      signUpPassword,
-                      TextInputType.visiblePassword,
-                      'Password',
-                      obscureText: true,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.only(
-                        left: 75,
-                        right: 75,
-                        top: 8,
-                        bottom: 8,
-                      ),
-                      width: MediaQuery.of(context).size.width,
-                      // height: 50,
-                      child: ElevatedButton(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Register',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ),
-                        onPressed: () async {
-                          bool r = await widget.model.signUp(
-                            signUpEmailId.text,
-                            signUpPassword.text,
-                          );
-
-                          if (r) {
-                            showAlertDialog(
-                              context,
-                              'Registered Successfully',
-                              'Check your inbox at ' +
-                                  signUpEmailId.text +
-                                  ' and verify your email using the link provided.',
-                            );
-                          } else {
-                            showAlertDialog(
-                              context,
-                              'Registration Error',
-                              'Check your email and password. If problem persists, contact admin at college',
-                            );
-                          }
-                        },
-                      ),
-                    ),
-                  ],
+              Padding(
+                padding: EdgeInsets.only(top: 250, bottom: 250),
+                child: VerticalDivider(
+                  thickness: 1,
+                  color: Colors.white,
                 ),
               ),
-            ),
-          ],
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.only(left: 120, right: 240),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        height: 500,
+                        width: 400,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Colors.white,
+                        ),
+                        child: Column(
+                          children: [
+                            Padding(padding: EdgeInsets.only(top: 100)),
+                            Text(
+                              'Register',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            SizedBox(height: 40),
+                            buildCustomTextField(
+                              signUpEmailId,
+                              TextInputType.emailAddress,
+                              'Email-ID',
+                            ),
+                            buildCustomTextField(
+                              signUpPassword,
+                              TextInputType.visiblePassword,
+                              'Password',
+                              obscureText: true,
+                            ),
+                            Container(
+                              padding: const EdgeInsets.only(
+                                left: 75,
+                                right: 75,
+                                top: 50,
+                                bottom: 8,
+                              ),
+                              width: MediaQuery.of(context).size.width,
+                              // height: 50,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                                child: Ink(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    gradient: LinearGradient(
+                                      begin: Alignment.bottomLeft,
+                                      end: Alignment.topRight,
+                                      colors: [
+                                        // Color(0xbff00acee),
+                                        // Color(0xbff00acee),
+                                        Color(0xbffC850C0),
+                                        Color(0xbffC850C0),
+                                        Color(0xbffFFCC70),
+                                        // Color(0xbff50c878),
+                                      ],
+                                    ),
+                                  ),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(8.0),
+                                    width: 300,
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      'Register',
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  bool r = await widget.model.signUp(
+                                    signUpEmailId.text,
+                                    signUpPassword.text,
+                                  );
+
+                                  if (r) {
+                                    showAlertDialog(
+                                      context,
+                                      'Registered Successfully',
+                                      'Check your inbox at ' +
+                                          signUpEmailId.text +
+                                          ' and verify your email using the link provided.',
+                                    );
+                                  } else {
+                                    showAlertDialog(
+                                      context,
+                                      'Registration Error',
+                                      'Check your email and password. If problem persists, contact admin at college',
+                                    );
+                                  }
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
