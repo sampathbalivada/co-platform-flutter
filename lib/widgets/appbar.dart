@@ -58,6 +58,14 @@ AppBar buildCustomAppBar(String title, var model, BuildContext context,
     title: Row(
       mainAxisSize: MainAxisSize.min,
       children: [
+        Container(
+          height: 36,
+          padding: EdgeInsets.only(right: 16),
+          child: Image.asset(
+            'assets/logo.png',
+            fit: BoxFit.scaleDown,
+          ),
+        ),
         Text(
           left,
           style: TextStyle(
