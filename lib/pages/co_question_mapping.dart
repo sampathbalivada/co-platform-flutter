@@ -17,7 +17,6 @@ class _COQuestionMappingState extends State<COQuestionMapping> {
     super.initState();
     for (var i = 0; i < 20; i++) {
       _questionController.add(TextEditingController());
-      _topicsController.add(TextEditingController());
       _COController.add('1');
     }
   }
@@ -52,8 +51,6 @@ class _COQuestionMappingState extends State<COQuestionMapping> {
   TextEditingController _numberOfQuestionsController = TextEditingController();
 
   List<TextEditingController> _questionController = [];
-
-  List<TextEditingController> _topicsController = [];
 
   // ignore: non_constant_identifier_names
   List<String> _COController = [];
@@ -176,15 +173,7 @@ class _COQuestionMappingState extends State<COQuestionMapping> {
                         style: TextStyle(fontSize: 22),
                       ),
                     ),
-                    SizedBox(width: 12),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.25,
-                      child: Text(
-                        'Topics',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 22),
-                      ),
-                    )
+                    
                   ],
                 ),
                 SizedBox(height: 24),
@@ -254,14 +243,6 @@ class _COQuestionMappingState extends State<COQuestionMapping> {
                                 'Question ${index + 1}',
                                 'Enter Max Marks'),
                           ),
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.25,
-                            child: text_field.buildCustomTextField(
-                                _topicsController[index],
-                                TextInputType.number,
-                                'Topics',
-                                'Enter Topics covered'),
-                          ),
                         ],
                       ),
                     );
@@ -279,14 +260,12 @@ class _COQuestionMappingState extends State<COQuestionMapping> {
                           onPressed: () {
                             List<int> _coControl = [];
                             List<int> _marksControl = [];
-                            List<String> _topicsControl = [];
                             bool errorStatus = false;
                             for (int i = 0; i < _numberOfQuestions; i++) {
                               try {
                                 _marksControl.add(
                                     int.parse(_questionController[i].text));
                                 _coControl.add(int.parse(_COController[i]));
-                                _topicsControl.add(_topicsController[i].text);
                               } catch (e) {
                                 errorStatus = true;
                                 break;
@@ -303,7 +282,6 @@ class _COQuestionMappingState extends State<COQuestionMapping> {
                                 _numberOfQuestions,
                                 _coControl,
                                 _marksControl,
-                                _topicsControl,
                                 int.parse(_mid),
                               );
 
